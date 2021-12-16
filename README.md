@@ -1,5 +1,5 @@
 # Building Blocks - 2017, 2021
-Revamped to the latest React styles in 2021
+Revamped from vanilla and jQuery to the latest React styles in 2021
 
 
 # Getting Started with Create React App
