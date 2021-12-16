@@ -1,3 +1,7 @@
+# Building Blocks - 2017, 2021
+Revamped to the latest React styles in 2021
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
