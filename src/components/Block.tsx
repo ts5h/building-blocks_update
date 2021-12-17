@@ -36,6 +36,7 @@ const Block = (props: BlockProps) => {
 
   return (
     <div
+      id={id}
       role="button"
       tabIndex={-1}
       onMouseDown={(e) => onMouseDownHandler(e)}
