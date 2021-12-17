@@ -5,13 +5,7 @@ import Styles from '../scss/components/Playground.module.scss'
 const Playground = () => {
   const [state, setState] = useState(false)
 
-  return (
-    <div
-      className={Styles.playground}
-    >
-      Playground
-    </div>
-  )
+  return <div className={Styles.playground}>Playground</div>
 }
 
 export default Playground
