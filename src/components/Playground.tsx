@@ -6,6 +6,9 @@ import Styles from '../scss/components/Playground.module.scss'
 const Playground = () => {
   const [state, setState] = useState(false)
 
+  // TODO: Show all blocks
+  // TODO: Get coordination and write db
+
   return (
     <div className={Styles.playground}>
       <Block />
