@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
-import useMousePosition from "./UseMousePosition";
+import useMousePosition from './UseMousePosition'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
-
 
 // Playground
 const Playground = () => {
