@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useMousePosition from './UseMousePosition'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
@@ -9,11 +9,21 @@ const Playground = () => {
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
+  const setCurrentElement = (div: HTMLDivElement) => {
+    setIsDrag(true)
+    setCurrent(div)
+  }
+
+  const onMouseUpHandler = () => {
+    setIsDrag(false)
+    setCurrent(null)
+  }
+
   const onMoveHandler = () => {
     if (isDrag && current) {
       const blockPosition = current.getBoundingClientRect()
-      let left = position.x - blockPosition.width / 2
-      let top = position.y - blockPosition.height / 2
+      let left = position.x + document.body.scrollLeft - blockPosition.width / 2
+      let top = position.y + document.body.scrollTop - blockPosition.height / 2
 
       if (left < 0) {
         left = 0
@@ -28,24 +38,11 @@ const Playground = () => {
     }
   }
 
-  const setCurrentElement = (div: HTMLDivElement) => {
-    setIsDrag(true)
-    setCurrent(div)
-  }
-
-  const onMouseUpHandler = () => {
-    setIsDrag(false)
-    setCurrent(null)
-  }
-
-  window.addEventListener('mousemove', onMoveHandler)
   window.addEventListener('mouseup', onMouseUpHandler)
-
-  // TODO: Show all blocks
-  // TODO: Get coordination and write db
+  window.addEventListener('mousemove', onMoveHandler)
 
   return (
-    <div className={`playground ${Styles.playground}`}>
+    <div className={Styles.playground}>
       <Block setCurrent={setCurrentElement} />
     </div>
   )
