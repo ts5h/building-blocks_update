@@ -1,14 +1,23 @@
 import React, { useState } from 'react'
-import isMobile from "ismobilejs";
+import isMobile from 'ismobilejs'
 import Styles from '../scss/components/Block.module.scss'
 
 // Each block
-const Block = () => {
+type BlockProps = {
+  position: {
+    x: number,
+    y: number
+  }
+}
+
+const Block = (props: BlockProps) => {
+  const { position } = props
   const [isDrag, setIsDrag] = useState(false)
 
-  const onMoveHandler = () => {
+  const onMoveHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
+    const block = e.currentTarget
     if (isDrag) {
-      console.log('move')
+      console.log(position)
     }
   }
 
@@ -28,10 +37,10 @@ const Block = () => {
       tabIndex={-1}
       onMouseDown={() => onMouseHandler(true)}
       onMouseUp={() => onMouseHandler(false)}
-      onMouseMove={() => onMoveHandler()}
+      onMouseMove={(e) => onMoveHandler(e)}
       onTouchStart={() => onTouchHandler(true)}
       onTouchEnd={() => onTouchHandler(false)}
-      onTouchMove={() => onMoveHandler()}
+      onTouchMove={(e) => onMoveHandler(e)}
       className={Styles.block}
     >
       block_1
