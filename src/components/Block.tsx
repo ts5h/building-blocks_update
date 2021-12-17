@@ -1,46 +1,34 @@
-import React, { useState } from 'react'
+import React from 'react'
 import isMobile from 'ismobilejs'
 import Styles from '../scss/components/Block.module.scss'
 
 // Each block
+// Reference: http://jsfiddle.net/Af9Jt/2/
 type BlockProps = {
-  position: {
-    x: number
-    y: number
-  }
+  setCurrent: (arg0: HTMLDivElement) => void
 }
 
 const Block = (props: BlockProps) => {
-  const { position } = props
-  const [isDrag, setIsDrag] = useState(false)
+  const { setCurrent } = props
 
-  const onMoveHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>) => {
-    const block = e.currentTarget
-    if (isDrag) {
-      console.log(position)
+  const onMouseDownHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    if (!isMobile().any) {
+      setCurrent(e.currentTarget)
     }
   }
 
-  const onMouseHandler = (drag: boolean) => {
-    if (isMobile().any) return
-    setIsDrag(drag)
-  }
-
-  const onTouchHandler = (drag: boolean) => {
-    if (!isMobile().any) return
-    setIsDrag(drag)
+  const onTouchStartHandler = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (isMobile().any) {
+      setCurrent(e.currentTarget)
+    }
   }
 
   return (
     <div
       role="button"
       tabIndex={-1}
-      onMouseDown={() => onMouseHandler(true)}
-      onMouseUp={() => onMouseHandler(false)}
-      onMouseMove={(e) => onMoveHandler(e)}
-      onTouchStart={() => onTouchHandler(true)}
-      onTouchEnd={() => onTouchHandler(false)}
-      onTouchMove={(e) => onMoveHandler(e)}
+      onMouseDown={(e) => onMouseDownHandler(e)}
+      onTouchStart={(e) => onTouchStartHandler(e)}
       className={Styles.block}
     >
       block_1
