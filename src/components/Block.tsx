@@ -6,21 +6,22 @@ import Styles from '../scss/components/Block.module.scss'
 type BlockProps = {
   id: string
   isDrag: boolean
+  current: HTMLDivElement | null
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void
 }
 
 const Block = (props: BlockProps) => {
-  const { id, isDrag, setCurrentElement } = props
+  const { id, isDrag, current, setCurrentElement } = props
   const [, idNum] = id.split('_')
   const [zIndex, setZIndex] = useState(0)
 
   useEffect(() => {
-    if (isDrag) {
+    if (isDrag && current?.id === id) {
       setZIndex(200)
     } else {
       setZIndex(parseInt(idNum, 10))
     }
-  }, [idNum, isDrag])
+  }, [idNum, isDrag, current, id])
 
   const onMouseDownHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile().any) {
