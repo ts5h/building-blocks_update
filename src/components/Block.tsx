@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import isMobile from "ismobilejs";
 import Styles from '../scss/components/Block.module.scss'
 
-// Blocks
+// Each block
 const Block = () => {
   const [isDrag, setIsDrag] = useState(false)
 

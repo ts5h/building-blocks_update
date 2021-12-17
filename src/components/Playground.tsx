@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Block from './Blocks'
+import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
 
 // Playground
