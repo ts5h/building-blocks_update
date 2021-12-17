@@ -3,7 +3,6 @@ import isMobile from 'ismobilejs'
 import Styles from '../scss/components/Block.module.scss'
 
 // Each block
-// Reference: http://jsfiddle.net/Af9Jt/2/
 type BlockProps = {
   setCurrent: (arg0: HTMLDivElement) => void
 }
@@ -29,6 +28,7 @@ const Block = (props: BlockProps) => {
       tabIndex={-1}
       onMouseDown={(e) => onMouseDownHandler(e)}
       onTouchStart={(e) => onTouchStartHandler(e)}
+      onDragStart={(e) => e.preventDefault()}
       className={Styles.block}
     >
       block_1
