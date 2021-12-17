@@ -5,7 +5,7 @@ import Styles from '../scss/components/Block.module.scss'
 // Each block
 type BlockProps = {
   position: {
-    x: number,
+    x: number
     y: number
   }
 }
