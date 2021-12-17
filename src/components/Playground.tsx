@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import useMousePosition from './UseMousePosition'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
@@ -53,8 +53,8 @@ const Playground = () => {
 
   return (
     <div className={Styles.playground}>
-      <Block id="block_1" isDrag={isDrag} setCurrentElement={setCurrentElement} />
-      <Block id="block_2" isDrag={isDrag} setCurrentElement={setCurrentElement} />
+      <Block id="block_1" isDrag={isDrag} current={current} setCurrentElement={setCurrentElement} />
+      <Block id="block_2" isDrag={isDrag} current={current} setCurrentElement={setCurrentElement} />
     </div>
   )
 }
