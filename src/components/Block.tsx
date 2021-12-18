@@ -47,7 +47,7 @@ const Block = (props: BlockProps) => {
       onMouseDown={(e) => onMouseDownHandler(e)}
       onTouchStart={(e) => onTouchStartHandler(e)}
       onDragStart={(e) => e.preventDefault()}
-      className={Styles.block}
+      className={`block ${Styles.block}`}
       style={{ zIndex, width, height, left: defaultX, top: defaultY }}
     >
       {id}

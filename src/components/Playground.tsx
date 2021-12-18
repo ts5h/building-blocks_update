@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
@@ -10,24 +10,37 @@ const Playground = () => {
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
-  const [blocks, setBlocks] = useState({})
-
-  const init = () => {
-    //
-  }
-
+  // Set current element via parent function
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
     setIsDrag(state)
     setCurrent(div)
   }
 
-  const onMouseUpHandler = () => {
-    setIsDrag(false)
-    setCurrent(null)
-  }
+  // Mouse up
+  const saveToDatabase = useCallback(
+    (e: MouseEvent | TouchEvent) => {
+      if (e.target !== current) {
+        //
+      }
+    },
+    [current]
+  )
 
-  window.addEventListener('mouseup', onMouseUpHandler)
+  useEffect(() => {
+    const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      saveToDatabase(e)
+      setIsDrag(false)
+      setCurrent(null)
+    }
 
+    window.addEventListener('mouseup', onMouseUpHandler)
+
+    return () => {
+      window.removeEventListener('mouseup', onMouseUpHandler)
+    }
+  }, [saveToDatabase])
+
+  // Mouse move
   useEffect(() => {
     const onMoveHandler = () => {
       if (isDrag && current) {
@@ -51,6 +64,7 @@ const Playground = () => {
         current.style.top = `${top}px`
       }
     }
+
     window.addEventListener('mousemove', onMoveHandler)
 
     return () => {
