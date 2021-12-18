@@ -1,0 +1,193 @@
+import React, { useCallback, useEffect, useState } from 'react'
+import isMobile from 'ismobilejs'
+import firebase from 'firebase/compat/app'
+import db from '../configs/FirebaseConfig'
+import useMousePosition from './UseMousePosition'
+import BlocksData from '../data/BlocksData'
+import Block from './Block'
+import Styles from '../scss/components/Playground.module.scss'
+
+// Blocks data types in DB
+type BlocksLog = {
+  blocks: [
+    {
+      id: string
+      x: number
+      y: number
+    }
+  ]
+  createdAt: firebase.firestore.Timestamp
+  updatedAt: firebase.firestore.Timestamp
+}
+
+// Playground
+const Playground = () => {
+  const movement = useMousePosition()
+  const [blocks, setBlocks] = useState(BlocksData)
+  const [isDrag, setIsDrag] = useState(false)
+  const [current, setCurrent] = useState<HTMLDivElement | null>(null)
+
+  // Get blocks coordination on load and updated
+  useEffect(() => {
+    const readRef = db.collection('blocks').doc('position')
+    const unsubscribe = readRef.onSnapshot((snapshot) => {
+      const loadedBlocks = (snapshot.data() as BlocksLog).blocks
+      const updateBlocks = loadedBlocks.map((block) => {
+        const [, idNumStr] = block.id.split('_')
+        const idNum = parseInt(idNumStr, 10)
+
+        return {
+          id: block.id,
+          defaultX: block.x < 0 ? 0 : block.x,
+          defaultY: block.y < 0 ? 0 : block.y,
+          width: BlocksData[idNum].width,
+          height: BlocksData[idNum].height,
+        }
+      })
+
+      setBlocks(updateBlocks)
+      // console.log(updateBlocks)
+    })
+
+    return () => unsubscribe()
+  }, [])
+
+  // Set current element via parent function
+  const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
+    setIsDrag(state)
+    setCurrent(div)
+  }
+
+  // Mouse up
+  const updatePosition = useCallback(
+    async (e: MouseEvent | TouchEvent) => {
+      if (e.target === current && current) {
+        const updateRef = db.collection('blocks').doc('position')
+        const updatedBlocks = blocks.map((block) => {
+          const el = document.querySelector(`#${block.id}`)
+          let x = 0
+          let y = 0
+          if (el) {
+            const pos = el.getBoundingClientRect()
+            x = pos.x + window.scrollX
+            y = pos.y + window.scrollY
+          } else {
+            x = block.defaultX
+            y = block.defaultY
+          }
+
+          return { id: block.id, x, y }
+        })
+
+        await updateRef.update({
+          blocks: updatedBlocks,
+          updatedAt: firebase.firestore.Timestamp.now(),
+        })
+      }
+    },
+    [blocks, current]
+  )
+
+  useEffect(() => {
+    const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      // eslint-disable-next-line no-void
+      void (async () => {
+        try {
+          await updatePosition(e)
+        } catch (err) {
+          console.error(err)
+        } finally {
+          setIsDrag(false)
+          setCurrent(null)
+        }
+      })()
+    }
+
+    if (isMobile().any) {
+      window.addEventListener('touchend', onMouseUpHandler)
+    } else {
+      window.addEventListener('mouseup', onMouseUpHandler)
+    }
+
+    return () => {
+      if (isMobile().any) {
+        window.removeEventListener('touchend', onMouseUpHandler)
+      } else {
+        window.removeEventListener('mouseup', onMouseUpHandler)
+      }
+    }
+  }, [updatePosition])
+
+  // Mouse move
+  useEffect(() => {
+    const onMoveHandler = (e: MouseEvent | TouchEvent) => {
+      if (isDrag && current) {
+        const blockPosition = current.getBoundingClientRect()
+        let left
+        let top
+
+        if (isMobile().any) {
+          left = movement.x - blockPosition.width / 2
+          top = movement.y - blockPosition.height / 2
+        } else {
+          left = movement.x + blockPosition.x + window.scrollX
+          top = movement.y + blockPosition.y + window.scrollY
+        }
+
+        if (left < 0) {
+          left = 0
+        } else if (left > 2000 - blockPosition.width) {
+          left = 2000 - blockPosition.width
+        }
+
+        if (top < 0) {
+          top = 0
+        } else if (top > 2000 - blockPosition.height) {
+          top = 2000 - blockPosition.height
+        }
+
+        current.style.left = `${left}px`
+        current.style.top = `${top}px`
+
+        if (isMobile().any && e.target === current) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
+      }
+    }
+
+    if (isMobile().any) {
+      window.addEventListener('touchmove', onMoveHandler, { passive: false })
+    } else {
+      window.addEventListener('mousemove', onMoveHandler)
+    }
+
+    return () => {
+      if (isMobile().any) {
+        window.removeEventListener('touchmove', onMoveHandler)
+      } else {
+        window.removeEventListener('mousemove', onMoveHandler)
+      }
+    }
+  }, [current, isDrag, movement, movement.x, movement.y])
+
+  return (
+    <div className={Styles.playground}>
+      {Object.entries(blocks).map(([key, value]) => (
+        <Block
+          key={key}
+          id={value.id}
+          width={value.width}
+          height={value.height}
+          defaultX={value.defaultX}
+          defaultY={value.defaultY}
+          isDrag={isDrag}
+          current={current}
+          setCurrentElement={setCurrentElement}
+        />
+      ))}
+    </div>
+  )
+}
+
+export default Playground
