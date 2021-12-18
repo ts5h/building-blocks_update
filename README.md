@@ -2,17 +2,19 @@
 Revamped from vanilla and jQuery to the latest React styles in 2021
 
 ## Firebase Config
+Should be added following as ```./src/configs/FirebaseConfig.ts```
+
 ```typescript
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import 'firebase/compat/auth'
 
 const config = {
-  apiKey: 'apiKey',
-  authDomain: 'authDomain',
-  projectId: 'projectId',
-  messagingSenderId: 'messagingSenderId',
-  appId: 'appId',
+  apiKey: 'Your apiKey',
+  authDomain: 'Your authDomain',
+  projectId: 'Your projectId',
+  messagingSenderId: 'Your messagingSenderId',
+  appId: 'Your appId',
 }
 
 const firebaseApp = firebase.initializeApp(config)
