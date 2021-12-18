@@ -5,13 +5,17 @@ import Styles from '../scss/components/Block.module.scss'
 // Each block
 type BlockProps = {
   id: string
+  width: number
+  height: number
+  defaultX: number
+  defaultY: number
   isDrag: boolean
   current: HTMLDivElement | null
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void
 }
 
 const Block = (props: BlockProps) => {
-  const { id, isDrag, current, setCurrentElement } = props
+  const { id, width, height, defaultX, defaultY, isDrag, current, setCurrentElement } = props
   const [, idNum] = id.split('_')
   const [zIndex, setZIndex] = useState(0)
 
@@ -44,7 +48,7 @@ const Block = (props: BlockProps) => {
       onTouchStart={(e) => onTouchStartHandler(e)}
       onDragStart={(e) => e.preventDefault()}
       className={Styles.block}
-      style={{ zIndex }}
+      style={{ zIndex, width, height, left: defaultX, top: defaultY }}
     >
       {id}
     </div>

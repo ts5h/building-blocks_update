@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import useMousePosition from './UseMousePosition'
+import BlocksData from '../data/BlocksData'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
 
@@ -53,8 +54,19 @@ const Playground = () => {
 
   return (
     <div className={Styles.playground}>
-      <Block id="block_1" isDrag={isDrag} current={current} setCurrentElement={setCurrentElement} />
-      <Block id="block_2" isDrag={isDrag} current={current} setCurrentElement={setCurrentElement} />
+      {Object.entries(BlocksData).map(([key, value]) => (
+        <Block
+          key={key}
+          id={value.id}
+          width={value.width}
+          height={value.height}
+          defaultX={value.defaultX}
+          defaultY={value.defaultY}
+          isDrag={isDrag}
+          current={current}
+          setCurrentElement={setCurrentElement}
+        />
+      ))}
     </div>
   )
 }
