@@ -10,6 +10,12 @@ const Playground = () => {
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
+  const [blocks, setBlocks] = useState({})
+
+  const init = () => {
+    //
+  }
+
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
     setIsDrag(state)
     setCurrent(div)
