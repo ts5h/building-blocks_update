@@ -1,12 +1,28 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import firebase from 'firebase/compat/app'
+import db from "../configs/FirebaseConfig";
 import useMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
 
+// Blocks data types in DB
+type BlocksLog = {
+  blocks: [
+    {
+      id: string
+      x: number
+      y: number
+    }
+  ]
+  createdAt: firebase.firestore.Timestamp
+  updatedAt: firebase.firestore.Timestamp
+}
+
 // Playground
 const Playground = () => {
   const movement = useMousePosition()
+  const [blocks, setBlocks] = useState(BlocksData)
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
@@ -16,21 +32,52 @@ const Playground = () => {
     setCurrent(div)
   }
 
+  // Synchronous processing
+
+
+
   // Mouse up
-  const saveToDatabase = useCallback(
-    (e: MouseEvent | TouchEvent) => {
-      if (e.target !== current) {
-        //
+  const updatePosition =  useCallback(async (e: MouseEvent | TouchEvent) => {
+      if (e.target === current && current) {
+        const updatedBlocks = blocks.map((block) => {
+          const el = document.querySelector(`#${block.id}`)
+          let x = 0
+          let y = 0
+          if (el) {
+            const pos = el.getBoundingClientRect()
+            x = pos.x
+            y = pos.y
+          } else {
+            x = block.defaultX
+            y = block.defaultY
+          }
+
+          return { id: block.id, x, y }
+        })
+
+        const useRef = db.collection('blocks').doc('position')
+        await useRef.update({
+          blocks: updatedBlocks,
+          updatedAt: firebase.firestore.Timestamp.now()
+        })
       }
     },
-    [current]
+    [blocks, current]
   )
 
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
-      saveToDatabase(e)
-      setIsDrag(false)
-      setCurrent(null)
+      // eslint-disable-next-line no-void
+      void (async () => {
+        try {
+          await updatePosition(e)
+        } catch (err) {
+          console.error(err)
+        } finally {
+          setIsDrag(false)
+          setCurrent(null)
+        }
+      })()
     }
 
     window.addEventListener('mouseup', onMouseUpHandler)
@@ -38,7 +85,7 @@ const Playground = () => {
     return () => {
       window.removeEventListener('mouseup', onMouseUpHandler)
     }
-  }, [saveToDatabase])
+  }, [updatePosition])
 
   // Mouse move
   useEffect(() => {
@@ -74,7 +121,7 @@ const Playground = () => {
 
   return (
     <div className={Styles.playground}>
-      {Object.entries(BlocksData).map(([key, value]) => (
+      {Object.entries(blocks).map(([key, value]) => (
         <Block
           key={key}
           id={value.id}

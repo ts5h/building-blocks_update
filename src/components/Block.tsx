@@ -19,19 +19,19 @@ const Block = (props: BlockProps) => {
   const [, idNum] = id.split('_')
   const [directStyles, setDirectStyles] = useState({
     backgroundColor: '#444',
-    zIndex: 0
+    zIndex: 0,
   })
 
   useEffect(() => {
     if (isDrag && current?.id === id) {
       setDirectStyles({
         backgroundColor: '#555',
-        zIndex: 200
+        zIndex: 200,
       })
     } else {
       setDirectStyles({
         backgroundColor: '#444',
-        zIndex: parseInt(idNum, 10)
+        zIndex: parseInt(idNum, 10),
       })
     }
   }, [idNum, isDrag, current, id])
@@ -57,7 +57,14 @@ const Block = (props: BlockProps) => {
       onTouchStart={(e) => onTouchStartHandler(e)}
       onDragStart={(e) => e.preventDefault()}
       className={`block ${Styles.block}`}
-      style={{ zIndex: directStyles.zIndex, backgroundColor: directStyles.backgroundColor, width, height, left: defaultX, top: defaultY }}
+      style={{
+        zIndex: directStyles.zIndex,
+        backgroundColor: directStyles.backgroundColor,
+        width,
+        height,
+        left: defaultX,
+        top: defaultY,
+      }}
     >
       {id}
     </div>
