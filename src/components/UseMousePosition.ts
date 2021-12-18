@@ -1,20 +1,38 @@
 import { useEffect, useState } from 'react'
+import isMobile from 'ismobilejs'
 
 const useMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
-    const setFromEvent = (e: { movementX: number; movementY: number }) =>
+    const setFromTouchEvent = (e: TouchEvent) => {
+      const touch = e.touches[0]
+      setPosition({
+        x: touch.pageX,
+        y: touch.pageY,
+      })
+    }
+
+    const setFromMouseEvent = (e: MouseEvent) =>
       setPosition({
         x: e.movementX,
         y: e.movementY,
       })
 
-    window.addEventListener('mousemove', setFromEvent)
-    return () => {
-      window.removeEventListener('mousemove', setFromEvent)
+    if (isMobile().any) {
+      window.addEventListener('touchmove', setFromTouchEvent)
+    } else {
+      window.addEventListener('mousemove', setFromMouseEvent)
     }
-  }, [])
+
+    return () => {
+      if (isMobile().any) {
+        window.removeEventListener('touchmove', setFromTouchEvent)
+      } else {
+        window.removeEventListener('mousemove', setFromMouseEvent)
+      }
+    }
+  }, [position])
 
   return position
 }

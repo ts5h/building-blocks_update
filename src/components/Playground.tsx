@@ -38,8 +38,8 @@ const Playground = () => {
 
         return {
           id: block.id,
-          defaultX: block.x,
-          defaultY: block.y,
+          defaultX: block.x < 0 ? 0 : block.x,
+          defaultY: block.y < 0 ? 0 : block.y,
           width: BlocksData[idNum].width,
           height: BlocksData[idNum].height,
         }
@@ -69,8 +69,8 @@ const Playground = () => {
           let y = 0
           if (el) {
             const pos = el.getBoundingClientRect()
-            x = pos.x
-            y = pos.y
+            x = pos.x + window.scrollX
+            y = pos.y + window.scrollY
           } else {
             x = block.defaultX
             y = block.defaultY
@@ -123,8 +123,16 @@ const Playground = () => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
       if (isDrag && current) {
         const blockPosition = current.getBoundingClientRect()
-        let left = movement.x + blockPosition.x + window.scrollX
-        let top = movement.y + blockPosition.y + window.scrollY
+        let left
+        let top
+
+        if (isMobile().any) {
+          left = movement.x - blockPosition.width / 2
+          top = movement.y - blockPosition.height / 2
+        } else {
+          left = movement.x + blockPosition.x + window.scrollX
+          top = movement.y + blockPosition.y + window.scrollY
+        }
 
         if (left < 0) {
           left = 0
@@ -140,12 +148,16 @@ const Playground = () => {
 
         current.style.left = `${left}px`
         current.style.top = `${top}px`
-        e.preventDefault()
+
+        if (isMobile().any && e.target === current) {
+          e.preventDefault()
+          e.stopPropagation()
+        }
       }
     }
 
     if (isMobile().any) {
-      window.addEventListener('touchmove', onMoveHandler)
+      window.addEventListener('touchmove', onMoveHandler, { passive: false })
     } else {
       window.addEventListener('mousemove', onMoveHandler)
     }
