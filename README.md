@@ -1,6 +1,27 @@
 # Building Blocks - 2017, 2021
 Revamped from vanilla and jQuery to the latest React styles in 2021
 
+## Firebase Config
+```typescript
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/firestore'
+import 'firebase/compat/auth'
+
+const config = {
+  apiKey: 'apiKey',
+  authDomain: 'authDomain',
+  projectId: 'projectId',
+  messagingSenderId: 'messagingSenderId',
+  appId: 'appId',
+}
+
+const firebaseApp = firebase.initializeApp(config)
+const db = firebaseApp.firestore()
+const auth = firebaseApp.auth()
+
+export { auth }
+export default db
+```
 
 # Getting Started with Create React App
 
