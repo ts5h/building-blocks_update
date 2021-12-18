@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
+import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
-import db from "../configs/FirebaseConfig";
+import db from '../configs/FirebaseConfig'
 import useMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
@@ -26,19 +27,42 @@ const Playground = () => {
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
+  // Get blocks coordination on load and updated
+  useEffect(() => {
+    const readRef = db.collection('blocks').doc('position')
+    const unsubscribe = readRef.onSnapshot((snapshot) => {
+      const loadedBlocks = (snapshot.data() as BlocksLog).blocks
+      const updateBlocks = loadedBlocks.map((block) => {
+        const [, idNumStr] = block.id.split('_')
+        const idNum = parseInt(idNumStr, 10)
+
+        return {
+          id: block.id,
+          defaultX: block.x,
+          defaultY: block.y,
+          width: BlocksData[idNum].width,
+          height: BlocksData[idNum].height,
+        }
+      })
+
+      setBlocks(updateBlocks)
+      // console.log(updateBlocks)
+    })
+
+    return () => unsubscribe()
+  }, [])
+
   // Set current element via parent function
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
     setIsDrag(state)
     setCurrent(div)
   }
 
-  // Synchronous processing
-
-
-
   // Mouse up
-  const updatePosition =  useCallback(async (e: MouseEvent | TouchEvent) => {
+  const updatePosition = useCallback(
+    async (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
+        const updateRef = db.collection('blocks').doc('position')
         const updatedBlocks = blocks.map((block) => {
           const el = document.querySelector(`#${block.id}`)
           let x = 0
@@ -55,10 +79,9 @@ const Playground = () => {
           return { id: block.id, x, y }
         })
 
-        const useRef = db.collection('blocks').doc('position')
-        await useRef.update({
+        await updateRef.update({
           blocks: updatedBlocks,
-          updatedAt: firebase.firestore.Timestamp.now()
+          updatedAt: firebase.firestore.Timestamp.now(),
         })
       }
     },
@@ -80,16 +103,24 @@ const Playground = () => {
       })()
     }
 
-    window.addEventListener('mouseup', onMouseUpHandler)
+    if (isMobile().any) {
+      window.addEventListener('touchend', onMouseUpHandler)
+    } else {
+      window.addEventListener('mouseup', onMouseUpHandler)
+    }
 
     return () => {
-      window.removeEventListener('mouseup', onMouseUpHandler)
+      if (isMobile().any) {
+        window.removeEventListener('touchend', onMouseUpHandler)
+      } else {
+        window.removeEventListener('mouseup', onMouseUpHandler)
+      }
     }
   }, [updatePosition])
 
   // Mouse move
   useEffect(() => {
-    const onMoveHandler = () => {
+    const onMoveHandler = (e: MouseEvent | TouchEvent) => {
       if (isDrag && current) {
         const blockPosition = current.getBoundingClientRect()
         let left = movement.x + blockPosition.x + window.scrollX
@@ -109,13 +140,22 @@ const Playground = () => {
 
         current.style.left = `${left}px`
         current.style.top = `${top}px`
+        e.preventDefault()
       }
     }
 
-    window.addEventListener('mousemove', onMoveHandler)
+    if (isMobile().any) {
+      window.addEventListener('touchmove', onMoveHandler)
+    } else {
+      window.addEventListener('mousemove', onMoveHandler)
+    }
 
     return () => {
-      window.removeEventListener('mousemove', onMoveHandler)
+      if (isMobile().any) {
+        window.removeEventListener('touchmove', onMoveHandler)
+      } else {
+        window.removeEventListener('mousemove', onMoveHandler)
+      }
     }
   }, [current, isDrag, movement, movement.x, movement.y])
 
