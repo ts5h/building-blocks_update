@@ -22,6 +22,7 @@ type BlocksLog = {
 
 // Playground
 const Playground = () => {
+  const useRef = db.collection('blocks').doc('position')
   const movement = useMousePosition()
   const [blocks, setBlocks] = useState(BlocksData)
   const [isDrag, setIsDrag] = useState(false)
@@ -29,8 +30,7 @@ const Playground = () => {
 
   // Get blocks coordination on load and updated
   useEffect(() => {
-    const readRef = db.collection('blocks').doc('position')
-    const unsubscribe = readRef.onSnapshot((snapshot) => {
+    const unsubscribe = useRef.onSnapshot((snapshot) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks
       const updateBlocks = loadedBlocks.map((block) => {
         const [, idNumStr] = block.id.split('_')
@@ -50,6 +50,7 @@ const Playground = () => {
     })
 
     return () => unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Set current element via parent function
@@ -62,7 +63,6 @@ const Playground = () => {
   const updatePosition = useCallback(
     async (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
-        const updateRef = db.collection('blocks').doc('position')
         const updatedBlocks = blocks.map((block) => {
           const el = document.querySelector(`#${block.id}`)
           let x = 0
@@ -79,14 +79,14 @@ const Playground = () => {
           return { id: block.id, x, y }
         })
 
-        await updateRef.update({
+        await useRef.update({
           blocks: updatedBlocks,
           updatedAt: firebase.firestore.Timestamp.now(),
         })
       }
-    },
-    [blocks, current]
-  )
+
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [blocks, current])
 
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
