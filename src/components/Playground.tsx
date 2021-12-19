@@ -84,9 +84,10 @@ const Playground = () => {
           updatedAt: firebase.firestore.Timestamp.now(),
         })
       }
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocks, current])
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [blocks, current]
+  )
 
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
