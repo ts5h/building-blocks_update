@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 
-const useMousePosition = () => {
+const UseMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -13,11 +13,12 @@ const useMousePosition = () => {
       })
     }
 
-    const setFromMouseEvent = (e: MouseEvent) =>
+    const setFromMouseEvent = (e: MouseEvent) => {
       setPosition({
         x: e.movementX,
         y: e.movementY,
       })
+    }
 
     if (isMobile().any) {
       window.addEventListener('touchmove', setFromTouchEvent)
@@ -32,9 +33,9 @@ const useMousePosition = () => {
         window.removeEventListener('mousemove', setFromMouseEvent)
       }
     }
-  }, [position])
+  }, [])
 
   return position
 }
 
-export default useMousePosition
+export default UseMousePosition
