@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
-import useMousePosition from './UseMousePosition'
+import UseMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
 import Styles from '../scss/components/Playground.module.scss'
@@ -23,7 +23,8 @@ type BlocksLog = {
 // Playground
 const Playground = () => {
   const useRef = db.collection('blocks').doc('position')
-  const movement = useMousePosition()
+  const movement = UseMousePosition()
+
   const [blocks, setBlocks] = useState(BlocksData)
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
@@ -63,21 +64,23 @@ const Playground = () => {
   const updatePosition = useCallback(
     async (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
-        const updatedBlocks = blocks.map((block) => {
-          const el = document.querySelector(`#${block.id}`)
-          let x = 0
-          let y = 0
+        const updatedBlocks = []
+        for (let i = 0; i < blocks.length; i += 1) {
+          const el = document.querySelector(`#${blocks[i].id}`)
+          let x: number
+          let y: number
+
           if (el) {
             const pos = el.getBoundingClientRect()
             x = pos.x + window.scrollX
             y = pos.y + window.scrollY
           } else {
-            x = block.defaultX
-            y = block.defaultY
+            x = blocks[i].defaultX
+            y = blocks[i].defaultY
           }
 
-          return { id: block.id, x, y }
-        })
+          updatedBlocks.push({ id: blocks[i].id, x, y })
+        }
 
         await useRef.update({
           blocks: updatedBlocks,
@@ -170,7 +173,7 @@ const Playground = () => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-  }, [current, isDrag, movement, movement.x, movement.y])
+  }, [current, isDrag, movement])
 
   return (
     <div className={Styles.playground}>
