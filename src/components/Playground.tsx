@@ -62,7 +62,7 @@ const Playground = () => {
 
   // Mouse up
   const updatePosition = useCallback(
-     (e: MouseEvent | TouchEvent) => {
+    (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
         const updatedBlocks = []
         for (let i = 0; i < blocks.length; i += 1) {
