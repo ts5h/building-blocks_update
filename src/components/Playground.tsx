@@ -22,6 +22,7 @@ type BlocksLog = {
 
 // Playground
 const Playground = () => {
+  const ua = navigator.userAgent
   const useRef = db.collection('blocks').doc('position')
   const movement = UseMousePosition()
 
@@ -125,6 +126,12 @@ const Playground = () => {
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
+      const playground = document.getElementById('playground')
+      if (playground) {
+        playground.style.position = ''
+        playground.style.overflow = ''
+      }
+
       if (isDrag && current) {
         const blockPosition = current.getBoundingClientRect()
         let left
@@ -153,7 +160,13 @@ const Playground = () => {
         current.style.left = `${left}px`
         current.style.top = `${top}px`
 
+
         if (isMobile().any && e.target === current) {
+          if (/Chrome/i.test(ua) && playground) {
+            playground.style.position = 'fixed'
+            playground.style.overflow = 'hidden'
+          }
+
           e.preventDefault()
           e.stopPropagation()
         }
@@ -173,6 +186,7 @@ const Playground = () => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current, isDrag, movement])
 
   return (
