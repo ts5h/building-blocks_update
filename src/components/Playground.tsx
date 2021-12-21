@@ -62,7 +62,7 @@ const Playground = () => {
 
   // Mouse up
   const updatePosition = useCallback(
-    async (e: MouseEvent | TouchEvent) => {
+     (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
         const updatedBlocks = []
         for (let i = 0; i < blocks.length; i += 1) {
@@ -82,7 +82,10 @@ const Playground = () => {
           updatedBlocks.push({ id: blocks[i].id, x, y })
         }
 
-        await useRef.update({
+        // Prevent slipping a few px of the block while dragging when on mouseup.
+        // Ignore the return value without using async/await because the process is rather heavy.
+        // eslint-disable-next-line no-void
+        void useRef.update({
           blocks: updatedBlocks,
           updatedAt: firebase.firestore.Timestamp.now(),
         })
@@ -94,17 +97,14 @@ const Playground = () => {
 
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
-      // eslint-disable-next-line no-void
-      void (async () => {
-        try {
-          await updatePosition(e)
-        } catch (err) {
-          console.error(err)
-        } finally {
-          setIsDrag(false)
-          setCurrent(null)
-        }
-      })()
+      try {
+        updatePosition(e)
+      } catch (err) {
+        console.error(err)
+      } finally {
+        setIsDrag(false)
+        setCurrent(null)
+      }
     }
 
     if (isMobile().any) {
@@ -176,7 +176,7 @@ const Playground = () => {
   }, [current, isDrag, movement])
 
   return (
-    <div className={Styles.playground}>
+    <div id="playground" className={Styles.playground}>
       {Object.entries(blocks).map(([key, value]) => (
         <Block
           key={key}

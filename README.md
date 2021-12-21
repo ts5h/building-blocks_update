@@ -1,5 +1,9 @@
 # Building Blocks - 2017, 2021
-Revamped from vanilla and jQuery to the latest React styles in 2021
+Objects that a work can be dragged and dropped.  
+Revamped from vanilla and jQuery to the latest React styles in 2021.
+
+https://0bjekt.co/2017/building-blocks/  
+NOTE: Mobile devices might have some dragging problems.
 
 ## Firebase Config
 Should be added following as ```./src/configs/FirebaseConfig.ts```
