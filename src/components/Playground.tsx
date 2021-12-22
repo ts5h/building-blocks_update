@@ -26,6 +26,7 @@ const Playground = () => {
   const useRef = db.collection('blocks').doc('position')
   const movement = UseMousePosition()
 
+  const isMobileChrome = useState(isMobile().any && /Chrome/i.test(ua))
   const [blocks, setBlocks] = useState(BlocksData)
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
@@ -130,6 +131,8 @@ const Playground = () => {
       if (playground) {
         playground.style.position = ''
         playground.style.overflow = ''
+        playground.style.left = ''
+        playground.style.top = ''
       }
 
       if (isDrag && current) {
@@ -162,9 +165,13 @@ const Playground = () => {
 
 
         if (isMobile().any && e.target === current) {
-          if (/Chrome/i.test(ua) && playground) {
-            playground.style.position = 'fixed'
-            playground.style.overflow = 'hidden'
+          if (isMobileChrome && playground) {
+            // playground.style.position = 'fixed'
+            // playground.style.overflow = 'hidden'
+            // playground.style.left = `${window.pageXOffset}px`
+            // playground.style.top = `${window.pageYOffset}px`
+
+            console.log(document.documentElement.scrollTop)
           }
 
           e.preventDefault()
