@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
@@ -22,18 +22,16 @@ type BlocksLog = {
 
 // Playground
 const Playground = () => {
-  const ua = navigator.userAgent
-  const useRef = db.collection('blocks').doc('position')
   const movement = UseMousePosition()
+  const dbRef = db.collection('blocks').doc('position')
 
-  const isMobileChrome = useState(isMobile().any && /Chrome/i.test(ua))
   const [blocks, setBlocks] = useState(BlocksData)
   const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
   // Get blocks coordination on load and updated
   useEffect(() => {
-    const unsubscribe = useRef.onSnapshot((snapshot) => {
+    const unsubscribe = dbRef.onSnapshot((snapshot) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks
       const updateBlocks = loadedBlocks.map((block) => {
         const [, idNumStr] = block.id.split('_')
@@ -87,7 +85,7 @@ const Playground = () => {
         // Prevent slipping a few px of the block while dragging when on mouseup.
         // Ignore the return value without using async/await because the process is rather heavy.
         // eslint-disable-next-line no-void
-        void useRef.update({
+        void dbRef.update({
           blocks: updatedBlocks,
           updatedAt: firebase.firestore.Timestamp.now(),
         })
@@ -127,14 +125,6 @@ const Playground = () => {
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      const playground = document.getElementById('playground')
-      if (playground) {
-        playground.style.position = ''
-        playground.style.overflow = ''
-        playground.style.left = ''
-        playground.style.top = ''
-      }
-
       if (isDrag && current) {
         const blockPosition = current.getBoundingClientRect()
         let left
@@ -163,17 +153,7 @@ const Playground = () => {
         current.style.left = `${left}px`
         current.style.top = `${top}px`
 
-
         if (isMobile().any && e.target === current) {
-          if (isMobileChrome && playground) {
-            // playground.style.position = 'fixed'
-            // playground.style.overflow = 'hidden'
-            // playground.style.left = `${window.pageXOffset}px`
-            // playground.style.top = `${window.pageYOffset}px`
-
-            console.log(document.documentElement.scrollTop)
-          }
-
           e.preventDefault()
           e.stopPropagation()
         }
