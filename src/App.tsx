@@ -3,7 +3,7 @@ import Playground from './components/Playground'
 import './scss/App.scss'
 
 const App = () => (
-  <div className="App">
+  <div>
     <Playground />
   </div>
 )

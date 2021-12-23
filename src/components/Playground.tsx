@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
@@ -120,6 +120,7 @@ const Playground = () => {
         window.removeEventListener('mouseup', onMouseUpHandler)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatePosition])
 
   // Mouse move
