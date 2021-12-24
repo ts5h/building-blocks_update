@@ -8,6 +8,7 @@ type DragContext = {
 
 export const dragContext = createContext<DragContext>({
   drag: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   setIsDrag: () => {},
 })
 

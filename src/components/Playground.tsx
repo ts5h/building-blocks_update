@@ -134,7 +134,8 @@ const Playground = (props: PlaygroundProps) => {
         window.removeEventListener('mouseup', onMouseUpHandler)
       }
     }
-  }, [ctx, updatePosition])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updatePosition])
 
   // Mouse move
   useEffect(() => {
@@ -187,7 +188,8 @@ const Playground = (props: PlaygroundProps) => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-  }, [ctx, App, current, movement])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [App, current, movement])
 
   return (
     <div id="playground" className={Styles.playground}>
