@@ -120,7 +120,6 @@ const Playground = () => {
         window.removeEventListener('mouseup', onMouseUpHandler)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatePosition])
 
   // Mouse move
@@ -174,7 +173,6 @@ const Playground = () => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current, isDrag, movement])
 
   return (
