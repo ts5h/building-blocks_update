@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { RefObject, useCallback, useContext, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
+import { dragContext } from './DragContext'
 import UseMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
@@ -21,17 +22,25 @@ type BlocksLog = {
 }
 
 // Playground
-const Playground = () => {
-  const useRef = db.collection('blocks').doc('position')
+type PlaygroundProps = {
+  AppRef: RefObject<HTMLDivElement | null>
+}
+
+const Playground = (props: PlaygroundProps) => {
+  const { AppRef } = props
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const App = AppRef.current!
+
+  const dbRef = db.collection('blocks').doc('position')
+  const ctx = useContext(dragContext)
   const movement = UseMousePosition()
 
   const [blocks, setBlocks] = useState(BlocksData)
-  const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
   // Get blocks coordination on load and updated
   useEffect(() => {
-    const unsubscribe = useRef.onSnapshot((snapshot) => {
+    const unsubscribe = dbRef.onSnapshot((snapshot) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks
       const updateBlocks = loadedBlocks.map((block) => {
         const [, idNumStr] = block.id.split('_')
@@ -56,13 +65,13 @@ const Playground = () => {
 
   // Set current element via parent function
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
-    setIsDrag(state)
+    ctx.setIsDrag(state)
     setCurrent(div)
   }
 
   // Mouse up
   const updatePosition = useCallback(
-     (e: MouseEvent | TouchEvent) => {
+    (e: MouseEvent | TouchEvent) => {
       if (e.target === current && current) {
         const updatedBlocks = []
         for (let i = 0; i < blocks.length; i += 1) {
@@ -72,8 +81,13 @@ const Playground = () => {
 
           if (el) {
             const pos = el.getBoundingClientRect()
-            x = pos.x + window.scrollX
-            y = pos.y + window.scrollY
+            if (isMobile().any) {
+              x = pos.x + App.scrollLeft
+              y = pos.y + App.scrollTop
+            } else {
+              x = pos.x + window.scrollX
+              y = pos.y + window.scrollY
+            }
           } else {
             x = blocks[i].defaultX
             y = blocks[i].defaultY
@@ -85,7 +99,7 @@ const Playground = () => {
         // Prevent slipping a few px of the block while dragging when on mouseup.
         // Ignore the return value without using async/await because the process is rather heavy.
         // eslint-disable-next-line no-void
-        void useRef.update({
+        void dbRef.update({
           blocks: updatedBlocks,
           updatedAt: firebase.firestore.Timestamp.now(),
         })
@@ -102,7 +116,7 @@ const Playground = () => {
       } catch (err) {
         console.error(err)
       } finally {
-        setIsDrag(false)
+        ctx.setIsDrag(false)
         setCurrent(null)
       }
     }
@@ -120,19 +134,20 @@ const Playground = () => {
         window.removeEventListener('mouseup', onMouseUpHandler)
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [updatePosition])
 
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (isDrag && current) {
+      if (ctx.drag && current) {
         const blockPosition = current.getBoundingClientRect()
         let left
         let top
 
         if (isMobile().any) {
-          left = movement.x - blockPosition.width / 2
-          top = movement.y - blockPosition.height / 2
+          left = movement.x - blockPosition.width / 2 + App.scrollLeft
+          top = movement.y - blockPosition.height / 2 + App.scrollTop
         } else {
           left = movement.x + blockPosition.x + window.scrollX
           top = movement.y + blockPosition.y + window.scrollY
@@ -173,7 +188,8 @@ const Playground = () => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-  }, [current, isDrag, movement])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [App, movement])
 
   return (
     <div id="playground" className={Styles.playground}>
@@ -185,7 +201,6 @@ const Playground = () => {
           height={value.height}
           defaultX={value.defaultX}
           defaultY={value.defaultY}
-          isDrag={isDrag}
           current={current}
           setCurrentElement={setCurrentElement}
         />
