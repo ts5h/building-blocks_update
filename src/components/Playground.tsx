@@ -1,4 +1,4 @@
-import React, {RefObject, useCallback, useEffect, useState} from 'react'
+import React, { RefObject, useCallback, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
@@ -87,7 +87,6 @@ const Playground = (props: PlaygroundProps) => {
               x = pos.x + window.scrollX
               y = pos.y + window.scrollY
             }
-
           } else {
             x = blocks[i].defaultX
             y = blocks[i].defaultY
