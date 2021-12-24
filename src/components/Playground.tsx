@@ -1,7 +1,8 @@
-import React, { RefObject, useCallback, useEffect, useState } from 'react'
+import React, { RefObject, useCallback, useContext, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
+import { dragContext } from './DragContext'
 import UseMousePosition from './UseMousePosition'
 import BlocksData from '../data/BlocksData'
 import Block from './Block'
@@ -30,11 +31,11 @@ const Playground = (props: PlaygroundProps) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const App = AppRef.current!
 
-  const movement = UseMousePosition()
   const dbRef = db.collection('blocks').doc('position')
+  const ctx = useContext(dragContext)
+  const movement = UseMousePosition()
 
   const [blocks, setBlocks] = useState(BlocksData)
-  const [isDrag, setIsDrag] = useState(false)
   const [current, setCurrent] = useState<HTMLDivElement | null>(null)
 
   // Get blocks coordination on load and updated
@@ -64,7 +65,7 @@ const Playground = (props: PlaygroundProps) => {
 
   // Set current element via parent function
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
-    setIsDrag(state)
+    ctx.setIsDrag(state)
     setCurrent(div)
   }
 
@@ -115,7 +116,7 @@ const Playground = (props: PlaygroundProps) => {
       } catch (err) {
         console.error(err)
       } finally {
-        setIsDrag(false)
+        ctx.setIsDrag(false)
         setCurrent(null)
       }
     }
@@ -133,12 +134,12 @@ const Playground = (props: PlaygroundProps) => {
         window.removeEventListener('mouseup', onMouseUpHandler)
       }
     }
-  }, [updatePosition])
+  }, [ctx, updatePosition])
 
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (isDrag && current) {
+      if (ctx.drag && current) {
         const blockPosition = current.getBoundingClientRect()
         let left
         let top
@@ -186,7 +187,7 @@ const Playground = (props: PlaygroundProps) => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-  }, [App, current, isDrag, movement])
+  }, [ctx, App, current, movement])
 
   return (
     <div id="playground" className={Styles.playground}>
@@ -198,7 +199,7 @@ const Playground = (props: PlaygroundProps) => {
           height={value.height}
           defaultX={value.defaultX}
           defaultY={value.defaultY}
-          isDrag={isDrag}
+          isDrag={ctx.drag}
           current={current}
           setCurrentElement={setCurrentElement}
         />
