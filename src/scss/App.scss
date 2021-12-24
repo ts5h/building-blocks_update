@@ -5,6 +5,7 @@
   height: 100%;
 
   &.lock {
+    overflow: hidden;
     touch-action: none;
   }
 }

@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import isMobile from 'ismobilejs'
+import { dragContext } from './DragContext'
 import Styles from '../scss/components/Block.module.scss'
 
 // Each block
@@ -9,13 +10,13 @@ type BlockProps = {
   height: number
   defaultX: number
   defaultY: number
-  isDrag: boolean
   current: HTMLDivElement | null
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void
 }
 
 const Block = (props: BlockProps) => {
-  const { id, width, height, defaultX, defaultY, isDrag, current, setCurrentElement } = props
+  const ctx = useContext(dragContext)
+  const { id, width, height, defaultX, defaultY, current, setCurrentElement } = props
   const [, idNum] = id.split('_')
   const [directStyles, setDirectStyles] = useState({
     backgroundColor: '#444',
@@ -23,7 +24,7 @@ const Block = (props: BlockProps) => {
   })
 
   useEffect(() => {
-    if (isDrag && current?.id === id) {
+    if (ctx.drag && current?.id === id) {
       setDirectStyles({
         backgroundColor: '#555',
         zIndex: 200,
@@ -34,7 +35,8 @@ const Block = (props: BlockProps) => {
         zIndex: parseInt(idNum, 10),
       })
     }
-  }, [idNum, isDrag, current, id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idNum, current, id])
 
   const onMouseDownHandler = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile().any) {

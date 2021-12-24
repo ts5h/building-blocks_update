@@ -189,7 +189,7 @@ const Playground = (props: PlaygroundProps) => {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [App, current, movement])
+  }, [App, movement])
 
   return (
     <div id="playground" className={Styles.playground}>
@@ -201,7 +201,6 @@ const Playground = (props: PlaygroundProps) => {
           height={value.height}
           defaultX={value.defaultX}
           defaultY={value.defaultY}
-          isDrag={ctx.drag}
           current={current}
           setCurrentElement={setCurrentElement}
         />
