@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, {RefObject, useCallback, useEffect, useState} from 'react'
 import isMobile from 'ismobilejs'
 import firebase from 'firebase/compat/app'
 import db from '../configs/FirebaseConfig'
@@ -21,7 +21,15 @@ type BlocksLog = {
 }
 
 // Playground
-const Playground = () => {
+type PlaygroundProps = {
+  AppRef: RefObject<HTMLDivElement | null>
+}
+
+const Playground = (props: PlaygroundProps) => {
+  const { AppRef } = props
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  const App = AppRef.current!
+
   const movement = UseMousePosition()
   const dbRef = db.collection('blocks').doc('position')
 
@@ -72,8 +80,14 @@ const Playground = () => {
 
           if (el) {
             const pos = el.getBoundingClientRect()
-            x = pos.x + window.scrollX
-            y = pos.y + window.scrollY
+            if (isMobile().any) {
+              x = pos.x + App.scrollLeft
+              y = pos.y + App.scrollTop
+            } else {
+              x = pos.x + window.scrollX
+              y = pos.y + window.scrollY
+            }
+
           } else {
             x = blocks[i].defaultX
             y = blocks[i].defaultY
@@ -131,8 +145,8 @@ const Playground = () => {
         let top
 
         if (isMobile().any) {
-          left = movement.x - blockPosition.width / 2
-          top = movement.y - blockPosition.height / 2
+          left = movement.x - blockPosition.width / 2 + App.scrollLeft
+          top = movement.y - blockPosition.height / 2 + App.scrollTop
         } else {
           left = movement.x + blockPosition.x + window.scrollX
           top = movement.y + blockPosition.y + window.scrollY
@@ -173,7 +187,7 @@ const Playground = () => {
         window.removeEventListener('mousemove', onMoveHandler)
       }
     }
-  }, [current, isDrag, movement])
+  }, [App, current, isDrag, movement])
 
   return (
     <div id="playground" className={Styles.playground}>
