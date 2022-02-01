@@ -3,7 +3,6 @@ A work that some objects can be dragged and dropped.
 Revamped from vanilla and jQuery to the latest React in 2021.
 
 https://0bjekt.co/2017/building-blocks/  
-NOTE: Mobile devices might have some dragging problems.
 
 ## Firebase Config
 Should be added following as ```./src/configs/FirebaseConfig.ts```
