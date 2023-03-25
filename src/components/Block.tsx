@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import isMobile from "ismobilejs";
-import { dragContext } from "./DragContext";
+import { dragContext } from "../hooks/useDrag";
 import Styles from "../scss/components/Block.module.scss";
 
 // Each block
