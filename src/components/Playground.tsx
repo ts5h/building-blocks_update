@@ -38,7 +38,7 @@ const Playground = (props: PlaygroundProps) => {
   const App = AppRef.current!;
 
   const dbRef = db.collection("blocks").doc("position");
-  const ctx = useContext(dragContext);
+  const { drag, setIsDrag } = useContext(dragContext);
   const movement = UseMousePosition();
 
   const [blocks, setBlocks] = useState(BlocksData);
@@ -71,7 +71,7 @@ const Playground = (props: PlaygroundProps) => {
 
   // Set current element via parent function
   const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
-    ctx.setIsDrag(state);
+    setIsDrag(state);
     setCurrent(div);
   };
 
@@ -122,7 +122,7 @@ const Playground = (props: PlaygroundProps) => {
       } catch (err) {
         console.error(err);
       } finally {
-        ctx.setIsDrag(false);
+        setIsDrag(false);
         setCurrent(null);
       }
     };
@@ -146,7 +146,7 @@ const Playground = (props: PlaygroundProps) => {
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (ctx.drag && current) {
+      if (drag && current) {
         const blockPosition = current.getBoundingClientRect();
         let left;
         let top;
