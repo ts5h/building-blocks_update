@@ -1,6 +1,7 @@
-const blocks: BlocksType[] = [
+export const blocksData: BlocksType[] = [
   {
     id: "block_0",
+    color: "",
     width: 25,
     height: 49,
     defaultX: 81,
@@ -8,6 +9,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_1",
+    color: "",
     width: 42,
     height: 20,
     defaultX: 137,
@@ -15,6 +17,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_2",
+    color: "",
     width: 15,
     height: 52,
     defaultX: 312,
@@ -22,6 +25,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_3",
+    color: "",
     width: 13,
     height: 17,
     defaultX: 251,
@@ -29,6 +33,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_4",
+    color: "",
     width: 48,
     height: 48,
     defaultX: 587,
@@ -36,6 +41,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_5",
+    color: "",
     width: 59,
     height: 40,
     defaultX: 23,
@@ -43,6 +49,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_6",
+    color: "",
     width: 16,
     height: 55,
     defaultX: 402,
@@ -50,6 +57,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_7",
+    color: "",
     width: 19,
     height: 50,
     defaultX: 413,
@@ -57,6 +65,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_8",
+    color: "",
     width: 54,
     height: 48,
     defaultX: 332,
@@ -64,6 +73,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_9",
+    color: "",
     width: 34,
     height: 47,
     defaultX: 539,
@@ -71,6 +81,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_10",
+    color: "",
     width: 34,
     height: 23,
     defaultX: 562,
@@ -78,6 +89,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_11",
+    color: "",
     width: 26,
     height: 21,
     defaultX: 374,
@@ -85,6 +97,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_12",
+    color: "",
     width: 60,
     height: 16,
     defaultX: 226,
@@ -92,6 +105,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_13",
+    color: "",
     width: 19,
     height: 31,
     defaultX: 124,
@@ -99,6 +113,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_14",
+    color: "",
     width: 37,
     height: 23,
     defaultX: 336,
@@ -106,6 +121,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_15",
+    color: "",
     width: 51,
     height: 35,
     defaultX: 158,
@@ -113,6 +129,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_16",
+    color: "",
     width: 27,
     height: 13,
     defaultX: 524,
@@ -120,6 +137,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_17",
+    color: "",
     width: 40,
     height: 16,
     defaultX: 538,
@@ -127,6 +145,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_18",
+    color: "",
     width: 54,
     height: 44,
     defaultX: 103,
@@ -134,6 +153,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_19",
+    color: "",
     width: 60,
     height: 15,
     defaultX: 379,
@@ -141,6 +161,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_20",
+    color: "",
     width: 38,
     height: 14,
     defaultX: 35,
@@ -148,6 +169,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_21",
+    color: "",
     width: 48,
     height: 35,
     defaultX: 68,
@@ -155,6 +177,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_22",
+    color: "",
     width: 24,
     height: 23,
     defaultX: 98,
@@ -162,6 +185,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_23",
+    color: "",
     width: 22,
     height: 44,
     defaultX: 405,
@@ -169,6 +193,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_24",
+    color: "",
     width: 14,
     height: 30,
     defaultX: 79,
@@ -176,6 +201,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_25",
+    color: "",
     width: 25,
     height: 17,
     defaultX: 323,
@@ -183,6 +209,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_26",
+    color: "",
     width: 60,
     height: 42,
     defaultX: 253,
@@ -190,6 +217,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_27",
+    color: "",
     width: 17,
     height: 19,
     defaultX: 230,
@@ -197,6 +225,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_28",
+    color: "",
     width: 19,
     height: 13,
     defaultX: 197,
@@ -204,6 +233,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_29",
+    color: "",
     width: 33,
     height: 15,
     defaultX: 137,
@@ -211,6 +241,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_30",
+    color: "",
     width: 51,
     height: 48,
     defaultX: 361,
@@ -218,6 +249,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_31",
+    color: "",
     width: 39,
     height: 23,
     defaultX: 56,
@@ -225,6 +257,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_32",
+    color: "",
     width: 28,
     height: 13,
     defaultX: 335,
@@ -232,6 +265,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_33",
+    color: "",
     width: 30,
     height: 30,
     defaultX: 160,
@@ -239,6 +273,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_34",
+    color: "",
     width: 28,
     height: 53,
     defaultX: 582,
@@ -246,6 +281,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_35",
+    color: "",
     width: 51,
     height: 20,
     defaultX: 395,
@@ -253,6 +289,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_36",
+    color: "",
     width: 47,
     height: 41,
     defaultX: 12,
@@ -260,6 +297,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_37",
+    color: "",
     width: 38,
     height: 53,
     defaultX: 191,
@@ -267,6 +305,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_38",
+    color: "",
     width: 57,
     height: 24,
     defaultX: 153,
@@ -274,6 +313,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_39",
+    color: "",
     width: 19,
     height: 47,
     defaultX: 506,
@@ -281,6 +321,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_40",
+    color: "",
     width: 24,
     height: 45,
     defaultX: 463,
@@ -288,6 +329,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_41",
+    color: "",
     width: 59,
     height: 16,
     defaultX: 454,
@@ -295,6 +337,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_42",
+    color: "",
     width: 21,
     height: 15,
     defaultX: 368,
@@ -302,6 +345,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_43",
+    color: "",
     width: 51,
     height: 58,
     defaultX: 167,
@@ -309,6 +353,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_44",
+    color: "",
     width: 35,
     height: 43,
     defaultX: 354,
@@ -316,6 +361,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_45",
+    color: "",
     width: 53,
     height: 42,
     defaultX: 488,
@@ -323,6 +369,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_46",
+    color: "",
     width: 29,
     height: 45,
     defaultX: 217,
@@ -330,6 +377,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_47",
+    color: "",
     width: 40,
     height: 24,
     defaultX: 514,
@@ -337,6 +385,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_48",
+    color: "",
     width: 45,
     height: 47,
     defaultX: 318,
@@ -344,6 +393,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_49",
+    color: "",
     width: 53,
     height: 46,
     defaultX: 407,
@@ -351,6 +401,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_50",
+    color: "",
     width: 58,
     height: 14,
     defaultX: 274,
@@ -358,6 +409,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_51",
+    color: "",
     width: 32,
     height: 36,
     defaultX: 143,
@@ -365,6 +417,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_52",
+    color: "",
     width: 57,
     height: 13,
     defaultX: 185,
@@ -372,6 +425,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_53",
+    color: "",
     width: 14,
     height: 58,
     defaultX: 515,
@@ -379,6 +433,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_54",
+    color: "",
     width: 21,
     height: 33,
     defaultX: 198,
@@ -386,6 +441,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_55",
+    color: "",
     width: 57,
     height: 14,
     defaultX: 5,
@@ -393,6 +449,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_56",
+    color: "",
     width: 46,
     height: 28,
     defaultX: 249,
@@ -400,6 +457,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_57",
+    color: "",
     width: 59,
     height: 47,
     defaultX: 359,
@@ -407,6 +465,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_58",
+    color: "",
     width: 56,
     height: 52,
     defaultX: 505,
@@ -414,6 +473,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_59",
+    color: "",
     width: 57,
     height: 54,
     defaultX: 55,
@@ -421,6 +481,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_60",
+    color: "",
     width: 17,
     height: 56,
     defaultX: 591,
@@ -428,6 +489,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_61",
+    color: "",
     width: 16,
     height: 49,
     defaultX: 232,
@@ -435,6 +497,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_62",
+    color: "",
     width: 49,
     height: 39,
     defaultX: 74,
@@ -442,6 +505,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_63",
+    color: "",
     width: 34,
     height: 43,
     defaultX: 366,
@@ -449,6 +513,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_64",
+    color: "",
     width: 51,
     height: 49,
     defaultX: 148,
@@ -456,6 +521,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_65",
+    color: "",
     width: 30,
     height: 50,
     defaultX: 261,
@@ -463,6 +529,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_66",
+    color: "",
     width: 21,
     height: 17,
     defaultX: 345,
@@ -470,6 +537,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_67",
+    color: "",
     width: 58,
     height: 20,
     defaultX: 498,
@@ -477,6 +545,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_68",
+    color: "",
     width: 50,
     height: 60,
     defaultX: 268,
@@ -484,6 +553,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_69",
+    color: "",
     width: 26,
     height: 40,
     defaultX: 541,
@@ -491,6 +561,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_70",
+    color: "",
     width: 48,
     height: 58,
     defaultX: 459,
@@ -498,6 +569,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_71",
+    color: "",
     width: 54,
     height: 26,
     defaultX: 56,
@@ -505,6 +577,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_72",
+    color: "",
     width: 55,
     height: 12,
     defaultX: 346,
@@ -512,6 +585,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_73",
+    color: "",
     width: 23,
     height: 52,
     defaultX: 395,
@@ -519,6 +593,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_74",
+    color: "",
     width: 37,
     height: 51,
     defaultX: 158,
@@ -526,6 +601,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_75",
+    color: "",
     width: 34,
     height: 18,
     defaultX: 464,
@@ -533,6 +609,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_76",
+    color: "",
     width: 50,
     height: 37,
     defaultX: 324,
@@ -540,6 +617,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_77",
+    color: "",
     width: 34,
     height: 26,
     defaultX: 1,
@@ -547,6 +625,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_78",
+    color: "",
     width: 15,
     height: 57,
     defaultX: 222,
@@ -554,6 +633,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_79",
+    color: "",
     width: 44,
     height: 53,
     defaultX: 93,
@@ -561,6 +641,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_80",
+    color: "",
     width: 40,
     height: 52,
     defaultX: 557,
@@ -568,6 +649,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_81",
+    color: "",
     width: 18,
     height: 51,
     defaultX: 41,
@@ -575,6 +657,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_82",
+    color: "",
     width: 59,
     height: 50,
     defaultX: 520,
@@ -582,6 +665,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_83",
+    color: "",
     width: 14,
     height: 14,
     defaultX: 104,
@@ -589,6 +673,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_84",
+    color: "",
     width: 19,
     height: 58,
     defaultX: 184,
@@ -596,6 +681,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_85",
+    color: "",
     width: 16,
     height: 41,
     defaultX: 448,
@@ -603,6 +689,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_86",
+    color: "",
     width: 49,
     height: 33,
     defaultX: 525,
@@ -610,6 +697,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_87",
+    color: "",
     width: 30,
     height: 53,
     defaultX: 127,
@@ -617,6 +705,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_88",
+    color: "",
     width: 48,
     height: 28,
     defaultX: 388,
@@ -624,6 +713,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_89",
+    color: "",
     width: 44,
     height: 26,
     defaultX: 563,
@@ -631,6 +721,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_90",
+    color: "",
     width: 41,
     height: 59,
     defaultX: 151,
@@ -638,6 +729,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_91",
+    color: "",
     width: 45,
     height: 29,
     defaultX: 401,
@@ -645,6 +737,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_92",
+    color: "",
     width: 24,
     height: 17,
     defaultX: 527,
@@ -652,6 +745,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_93",
+    color: "",
     width: 55,
     height: 31,
     defaultX: 83,
@@ -659,6 +753,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_94",
+    color: "",
     width: 43,
     height: 50,
     defaultX: 350,
@@ -666,6 +761,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_95",
+    color: "",
     width: 56,
     height: 36,
     defaultX: 219,
@@ -673,6 +769,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_96",
+    color: "",
     width: 40,
     height: 40,
     defaultX: 94,
@@ -680,6 +777,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_97",
+    color: "",
     width: 48,
     height: 46,
     defaultX: 191,
@@ -687,6 +785,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_98",
+    color: "",
     width: 45,
     height: 51,
     defaultX: 156,
@@ -694,6 +793,7 @@ const blocks: BlocksType[] = [
   },
   {
     id: "block_99",
+    color: "",
     width: 30,
     height: 50,
     defaultX: 542,
@@ -701,4 +801,3 @@ const blocks: BlocksType[] = [
   },
 ];
 
-export default blocks;

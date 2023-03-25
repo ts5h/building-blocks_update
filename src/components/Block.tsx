@@ -15,7 +15,7 @@ type BlockProps = {
 };
 
 const Block = (props: BlockProps) => {
-  const ctx = useContext(dragContext);
+  const { drag } = useContext(dragContext);
   const { id, width, height, defaultX, defaultY, current, setCurrentElement } =
     props;
   const [, idNum] = id.split("_");
@@ -25,7 +25,7 @@ const Block = (props: BlockProps) => {
   });
 
   useEffect(() => {
-    if (ctx.drag && current?.id === id) {
+    if (drag && current?.id === id) {
       setDirectStyles({
         backgroundColor: "#555",
         zIndex: 200,

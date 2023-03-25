@@ -10,7 +10,7 @@ import firebase from "firebase/compat/app";
 import db from "../configs/FirebaseConfig";
 import { dragContext } from "../hooks/useDrag";
 import UseMousePosition from "../hooks/UseMousePosition";
-import BlocksData from "../data/BlocksData";
+import { blocksData } from "../data/blocksData";
 import Block from "./Block";
 import Styles from "../scss/components/Playground.module.scss";
 
@@ -40,7 +40,7 @@ const Playground = (props: PlaygroundProps) => {
   const { drag, setIsDrag } = useContext(dragContext);
   const movement = UseMousePosition();
 
-  const [blocks, setBlocks] = useState(BlocksData);
+  const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
 
   // Get blocks coordination on load and updated
@@ -53,15 +53,16 @@ const Playground = (props: PlaygroundProps) => {
 
         return {
           id: block.id,
+          color: "",
           defaultX: block.x < 0 ? 0 : block.x,
           defaultY: block.y < 0 ? 0 : block.y,
-          width: BlocksData[idNum].width,
-          height: BlocksData[idNum].height,
+          width: blocksData[idNum].width,
+          height: blocksData[idNum].height,
         };
       });
 
       setBlocks(updateBlocks);
-      // console.log(updateBlocks)
+      // console.log(updateBlocks);
     });
 
     return () => unsubscribe();
