@@ -34,8 +34,7 @@ type PlaygroundProps = {
 
 const Playground = (props: PlaygroundProps) => {
   const { AppRef } = props;
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const App = AppRef.current!;
+  const App = AppRef.current;
 
   const dbRef = db.collection("blocks_2023").doc("position");
   const { drag, setIsDrag } = useContext(dragContext);
@@ -78,41 +77,41 @@ const Playground = (props: PlaygroundProps) => {
   // Mouse up
   const updatePosition = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (e.target === current && current) {
-        const updatedBlocks = [];
-        for (let i = 0; i < blocks.length; i += 1) {
-          const el = document.querySelector(`#${blocks[i].id}`);
-          let x: number;
-          let y: number;
+      if (!App || e.target !== current || !current) return;
 
-          if (el) {
-            const pos = el.getBoundingClientRect();
-            if (isMobile().any) {
-              x = pos.x + App.scrollLeft;
-              y = pos.y + App.scrollTop;
-            } else {
-              x = pos.x + window.scrollX;
-              y = pos.y + window.scrollY;
-            }
+      const updatedBlocks = [];
+      for (let i = 0; i < blocks.length; i += 1) {
+        const el = document.querySelector(`#${blocks[i].id}`);
+        let x: number;
+        let y: number;
+
+        if (el) {
+          const pos = el.getBoundingClientRect();
+          if (isMobile().any) {
+            x = pos.x + App.scrollLeft;
+            y = pos.y + App.scrollTop;
           } else {
-            x = blocks[i].defaultX;
-            y = blocks[i].defaultY;
+            x = pos.x + window.scrollX;
+            y = pos.y + window.scrollY;
           }
-
-          updatedBlocks.push({ id: blocks[i].id, x, y });
+        } else {
+          x = blocks[i].defaultX;
+          y = blocks[i].defaultY;
         }
 
-        // Prevent slipping a few px of the block while dragging when on mouseup.
-        // Ignore the return value without using async/await because the process is rather heavy.
-        // eslint-disable-next-line no-void
-        void dbRef.update({
-          blocks: updatedBlocks,
-          updatedAt: firebase.firestore.Timestamp.now(),
-        });
+        updatedBlocks.push({ id: blocks[i].id, x, y });
       }
+
+      // Prevent slipping a few px of the block while dragging when on mouseup.
+      // Ignore the return value without using async/await because the process is rather heavy.
+      // eslint-disable-next-line no-void
+      void dbRef.update({
+        blocks: updatedBlocks,
+        updatedAt: firebase.firestore.Timestamp.now(),
+      });
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [blocks, current],
+    [App, blocks, current],
   );
 
   useEffect(() => {
@@ -146,38 +145,38 @@ const Playground = (props: PlaygroundProps) => {
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (drag && current) {
-        const blockPosition = current.getBoundingClientRect();
-        let left;
-        let top;
+      if (!App || !drag || !current) return;
 
-        if (isMobile().any) {
-          left = movement.x - blockPosition.width / 2 + App.scrollLeft;
-          top = movement.y - blockPosition.height / 2 + App.scrollTop;
-        } else {
-          left = movement.x + blockPosition.x + window.scrollX;
-          top = movement.y + blockPosition.y + window.scrollY;
-        }
+      const blockPosition = current.getBoundingClientRect();
+      let left;
+      let top;
 
-        if (left < 0) {
-          left = 0;
-        } else if (left > 2000 - blockPosition.width) {
-          left = 2000 - blockPosition.width;
-        }
+      if (isMobile().any) {
+        left = movement.x - blockPosition.width / 2 + App.scrollLeft;
+        top = movement.y - blockPosition.height / 2 + App.scrollTop;
+      } else {
+        left = movement.x + blockPosition.x + window.scrollX;
+        top = movement.y + blockPosition.y + window.scrollY;
+      }
 
-        if (top < 0) {
-          top = 0;
-        } else if (top > 2000 - blockPosition.height) {
-          top = 2000 - blockPosition.height;
-        }
+      if (left < 0) {
+        left = 0;
+      } else if (left > 2000 - blockPosition.width) {
+        left = 2000 - blockPosition.width;
+      }
 
-        current.style.left = `${left}px`;
-        current.style.top = `${top}px`;
+      if (top < 0) {
+        top = 0;
+      } else if (top > 2000 - blockPosition.height) {
+        top = 2000 - blockPosition.height;
+      }
 
-        if (isMobile().any && e.target === current) {
-          e.preventDefault();
-          e.stopPropagation();
-        }
+      current.style.left = `${left}px`;
+      current.style.top = `${top}px`;
+
+      if (isMobile().any && e.target === current) {
+        e.preventDefault();
+        e.stopPropagation();
       }
     };
 
