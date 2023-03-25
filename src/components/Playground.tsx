@@ -37,7 +37,7 @@ const Playground = (props: PlaygroundProps) => {
   // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const App = AppRef.current!;
 
-  const dbRef = db.collection("blocks").doc("position");
+  const dbRef = db.collection("blocks_2023").doc("position");
   const { drag, setIsDrag } = useContext(dragContext);
   const movement = UseMousePosition();
 
