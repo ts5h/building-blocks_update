@@ -9,6 +9,7 @@ specifiers:
   '@types/react': ^18.0.29
   '@types/react-dom': ^18.0.11
   '@types/testing-library__jest-dom': ^5.14.5
+  '@types/tinycolor2': ^1.4.3
   '@typescript-eslint/eslint-plugin': ^5.56.0
   '@typescript-eslint/parser': ^5.56.0
   eslint: ^8.36.0
@@ -27,6 +28,7 @@ specifiers:
   react-scripts: ^5.0.1
   rome: ^11.0.0
   sass: ^1.60.0
+  tinycolor2: ^1.6.0
   typescript: ^5.0.2
   web-vitals: ^3.3.0
 
@@ -42,12 +44,14 @@ dependencies:
   react-device-detect: 2.2.3_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
   react-scripts: 5.0.1_oj6nqg2wupfgqg32hfuefyilby
+  tinycolor2: 1.6.0
   typescript: 5.0.2
   web-vitals: 3.3.0
 
 devDependencies:
   '@testing-library/jest-dom': 5.16.5
   '@types/testing-library__jest-dom': 5.14.5
+  '@types/tinycolor2': 1.4.3
   '@typescript-eslint/eslint-plugin': 5.56.0_2hcjazgfnbtq42tcc73br2vup4
   '@typescript-eslint/parser': 5.56.0_j4766f7ecgqbon3u7zlxn5zszu
   eslint: 8.36.0
@@ -3104,6 +3108,10 @@ packages:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
       '@types/jest': 29.5.0
+    dev: true
+
+  /@types/tinycolor2/1.4.3:
+    resolution: {integrity: sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==}
     dev: true
 
   /@types/trusted-types/2.0.3:
@@ -10163,6 +10171,10 @@ packages:
 
   /thunky/1.1.0:
     resolution: {integrity: sha512-eHY7nBftgThBqOyHGVN+l8gF0BucP09fMo0oO/Lb0w1OF80dJv+lDVpXG60WMQvkcxAkNybKsrEIE3ZtKGmPrA==}
+    dev: false
+
+  /tinycolor2/1.6.0:
+    resolution: {integrity: sha512-XPaBkWQJdsf3pLKJV9p4qN/S+fm2Oj8AIPo1BTUhg5oxkvm9+SVEGFdhyOz7tTdUTfvxMiAs4sp6/eZO2Ew+pw==}
     dev: false
 
   /tmpl/1.0.5:

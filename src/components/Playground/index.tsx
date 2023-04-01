@@ -2,8 +2,8 @@ import React, {
   RefObject,
   useCallback,
   useContext,
-  useEffect, useRef,
-  useState
+  useEffect,
+  useState,
 } from "react";
 import { isMobile } from "react-device-detect";
 import firebase from "firebase/compat/app";
@@ -44,14 +44,18 @@ export const Playground = (props: Props) => {
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
-  const maxZ = useRef(blocksData.length);
 
-  const getMyColor = useCallback((id: string) => {
-    const [, idNumStr] = id.split("_");
-    const idNum = parseInt(idNumStr, 10);
-
-    return colors[idNum % colors.length];
+  const getIdNumber = useCallback((id: string) => {
+    const [, idNumberString] = id.split("_");
+    return parseInt(idNumberString, 10);
   }, []);
+
+  const getMyColor = useCallback(
+    (id: string) => {
+      return colors[getIdNumber(id) % colors.length];
+    },
+    [getIdNumber],
+  );
 
   // Get blocks coordination on load and updated
   useEffect(() => {
@@ -60,9 +64,7 @@ export const Playground = (props: Props) => {
       if (!loadedBlocks) return;
 
       const updateBlocks = loadedBlocks.map((block) => {
-        const [, idNumStr] = block.id.split("_");
-        const idNum = parseInt(idNumStr, 10);
-
+        const idNum = getIdNumber(block.id);
         return {
           id: block.id,
           defaultX: block.x < 0 ? 0 : block.x,
@@ -77,7 +79,8 @@ export const Playground = (props: Props) => {
     });
 
     return () => unsubscribe();
-  }, [dbRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Set current element via parent function
   const setCurrentElement = (
@@ -93,7 +96,7 @@ export const Playground = (props: Props) => {
     (e: MouseEvent | TouchEvent) => {
       if (!App || e.target !== current || !current) return;
 
-      let updatedBlocks = [];
+      const updatedBlocks = [];
       for (let i = 0; i < blocks.length; i += 1) {
         const el = document.getElementById(blocks[i].id);
         let x: number;
@@ -120,16 +123,6 @@ export const Playground = (props: Props) => {
         updatedBlocks.push({ id: blocks[i].id, x, y, z });
       }
 
-      // Sort by z-index and reassign z-index
-      updatedBlocks.sort((a, b) => {
-        if (a.z === b.z) return 0;
-        return a.z > b.z ? 1 : -1;
-      });
-
-      updatedBlocks = updatedBlocks.map((block, index) => {
-        return { ...block, z: index };
-      });
-
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
       // eslint-disable-next-line no-void
@@ -146,7 +139,6 @@ export const Playground = (props: Props) => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
       setIsDrag(false);
       setCurrent(null);
-      maxZ.current += 1;
 
       try {
         updatePosition(e);
@@ -231,6 +223,7 @@ export const Playground = (props: Props) => {
         <Block
           key={key}
           id={value.id}
+          idNumber={getIdNumber(value.id)}
           color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
@@ -239,7 +232,6 @@ export const Playground = (props: Props) => {
           defaultZ={value.defaultZ}
           current={current}
           setCurrentElement={setCurrentElement}
-          maxZ={maxZ}
         />
       ))}
     </div>

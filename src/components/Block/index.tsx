@@ -1,12 +1,12 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import tinyColor from "tinycolor2";
 import { isMobile } from "react-device-detect";
 import { dragContext } from "../../hooks/useDrag";
-import { blocksData } from "../../data/blocksData";
 import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
 type Props = BlocksType & {
-  maxZ: React.MutableRefObject<number>;
+  idNumber: number;
   color: string;
   current: HTMLDivElement | null;
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
@@ -14,16 +14,16 @@ type Props = BlocksType & {
 
 export const Block = (props: Props) => {
   const {
-    maxZ,
     id,
+    idNumber,
     width,
     height,
     defaultX,
     defaultY,
+    defaultZ,
     color,
     current,
     setCurrentElement,
-
   } = props;
 
   const { isDrag } = useContext(dragContext);
@@ -31,8 +31,6 @@ export const Block = (props: Props) => {
     zIndex: 0,
     backgroundColor: color,
   });
-
-  const [, idNum] = useMemo(() => id.split("_"), [id]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
@@ -50,34 +48,19 @@ export const Block = (props: Props) => {
     e.preventDefault();
   };
 
-  const handleFocus = (e: React.FocusEvent<HTMLDivElement>) => {
-    e.currentTarget.blur();
-  };
-
   useEffect(() => {
     if (isDrag && current?.id === id) {
-      const zIndex = maxZ.current + 1;
       setDirectStyles({
-        zIndex,
-        backgroundColor: "#555",
+        zIndex: 200,
+        backgroundColor: tinyColor(color).lighten(10).toString(),
       });
     } else {
-      const el = document.getElementById(id);
-      if (!el) return;
-
-      let zIndex = parseInt(getComputedStyle(el).zIndex, 10);
-      if (zIndex === 0) {
-        zIndex = blocksData[parseInt(idNum, 10)].defaultZ;
-      }
-
       setDirectStyles({
-        zIndex,
+        zIndex: defaultZ,
         backgroundColor: color,
       });
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [current, idNum, id]);
+  }, [color, current, defaultZ, id, idNumber, isDrag]);
 
   return (
     <div
@@ -87,7 +70,6 @@ export const Block = (props: Props) => {
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
-      onFocus={handleFocus}
       className={`block ${Styles.block}`}
       style={{
         zIndex: directStyles.zIndex,
