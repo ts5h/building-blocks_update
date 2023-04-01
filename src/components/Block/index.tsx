@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import isMobile from "ismobilejs";
-import { dragContext } from "../hooks/useDrag";
-import Styles from "../scss/components/Block.module.scss";
+import { dragContext } from "../../hooks/useDrag";
+import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
 type BlockProps = {
@@ -14,10 +14,11 @@ type BlockProps = {
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
 };
 
-const Block = (props: BlockProps) => {
-  const { drag } = useContext(dragContext);
+export const Block = (props: BlockProps) => {
   const { id, width, height, defaultX, defaultY, current, setCurrentElement } =
     props;
+
+  const { drag } = useContext(dragContext);
   const [, idNum] = id.split("_");
   const [directStyles, setDirectStyles] = useState({
     backgroundColor: "#444",
@@ -75,5 +76,3 @@ const Block = (props: BlockProps) => {
     </div>
   );
 };
-
-export default Block;

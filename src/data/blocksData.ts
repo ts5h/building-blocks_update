@@ -800,4 +800,3 @@ export const blocksData: BlocksType[] = [
     defaultY: 492,
   },
 ];
-

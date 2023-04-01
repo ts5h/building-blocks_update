@@ -7,12 +7,12 @@ import React, {
 } from "react";
 import isMobile from "ismobilejs";
 import firebase from "firebase/compat/app";
-import db from "../configs/FirebaseConfig";
-import { dragContext } from "../hooks/useDrag";
-import UseMousePosition from "../hooks/UseMousePosition";
-import { blocksData } from "../data/blocksData";
-import Block from "./Block";
-import Styles from "../scss/components/Playground.module.scss";
+import db from "../../configs/FirebaseConfig";
+import { dragContext } from "../../hooks/useDrag";
+import UseMousePosition from "../../hooks/UseMousePosition";
+import { blocksData } from "../../data/blocksData";
+import { Block } from "../Block";
+import Styles from "../../scss/components/Playground.module.scss";
 
 // Blocks data types in DB
 type BlocksLog = {
@@ -32,7 +32,7 @@ type PlaygroundProps = {
   AppRef: RefObject<HTMLDivElement | null>;
 };
 
-const Playground = (props: PlaygroundProps) => {
+export const Playground = (props: PlaygroundProps) => {
   const { AppRef } = props;
   const App = AppRef.current;
 
@@ -214,5 +214,3 @@ const Playground = (props: PlaygroundProps) => {
     </div>
   );
 };
-
-export default Playground;
