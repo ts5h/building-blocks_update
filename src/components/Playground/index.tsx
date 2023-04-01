@@ -47,6 +47,8 @@ export const Playground = (props: Props) => {
   useEffect(() => {
     const unsubscribe = dbRef.onSnapshot((snapshot) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks;
+      if (!loadedBlocks) return;
+
       const updateBlocks = loadedBlocks.map((block) => {
         const [, idNumStr] = block.id.split("_");
         const idNum = parseInt(idNumStr, 10);
@@ -70,9 +72,12 @@ export const Playground = (props: Props) => {
   }, []);
 
   // Set current element via parent function
-  const setCurrentElement = (state: boolean, div: HTMLDivElement | null) => {
+  const setCurrentElement = (
+    state: boolean,
+    divElement: HTMLDivElement | null,
+  ) => {
     setIsDrag(state);
-    setCurrent(div);
+    setCurrent(divElement);
   };
 
   // Mouse up
