@@ -2,8 +2,8 @@ import React, {
   RefObject,
   useCallback,
   useContext,
-  useEffect,
-  useState,
+  useEffect, useRef,
+  useState
 } from "react";
 import { isMobile } from "react-device-detect";
 import firebase from "firebase/compat/app";
@@ -44,6 +44,7 @@ export const Playground = (props: Props) => {
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
+  const maxZ = useRef(blocksData.length);
 
   const getMyColor = useCallback((id: string) => {
     const [, idNumStr] = id.split("_");
@@ -73,12 +74,10 @@ export const Playground = (props: Props) => {
       });
 
       setBlocks(updateBlocks);
-      // console.log(updateBlocks);
     });
 
     return () => unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dbRef]);
 
   // Set current element via parent function
   const setCurrentElement = (
@@ -111,9 +110,7 @@ export const Playground = (props: Props) => {
             y = pos.y + window.scrollY;
           }
 
-          // TODO: Fix this
-          z = parseInt(el.style.zIndex, 10);
-          console.log(z);
+          z = parseInt(getComputedStyle(el).zIndex, 10);
         } else {
           x = blocks[i].defaultX;
           y = blocks[i].defaultY;
@@ -124,9 +121,10 @@ export const Playground = (props: Props) => {
       }
 
       // Sort by z-index and reassign z-index
-      // updatedBlocks.sort((a, b) => {
-      //   return b.z - a.z > 0 ? -1 : 1;
-      // });
+      updatedBlocks.sort((a, b) => {
+        if (a.z === b.z) return 0;
+        return a.z > b.z ? 1 : -1;
+      });
 
       updatedBlocks = updatedBlocks.map((block, index) => {
         return { ...block, z: index };
@@ -146,13 +144,14 @@ export const Playground = (props: Props) => {
 
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      setIsDrag(false);
+      setCurrent(null);
+      maxZ.current += 1;
+
       try {
         updatePosition(e);
       } catch (err) {
         console.error(err);
-      } finally {
-        setIsDrag(false);
-        setCurrent(null);
       }
     };
 
@@ -240,6 +239,7 @@ export const Playground = (props: Props) => {
           defaultZ={value.defaultZ}
           current={current}
           setCurrentElement={setCurrentElement}
+          maxZ={maxZ}
         />
       ))}
     </div>
