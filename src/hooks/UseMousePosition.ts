@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import isMobile from "ismobilejs";
+import {isMobile} from "react-device-detect";
 
 const UseMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -20,14 +20,14 @@ const UseMousePosition = () => {
       });
     };
 
-    if (isMobile().any) {
+    if (isMobile) {
       window.addEventListener("touchmove", setFromTouchEvent);
     } else {
       window.addEventListener("mousemove", setFromMouseEvent);
     }
 
     return () => {
-      if (isMobile().any) {
+      if (isMobile) {
         window.removeEventListener("touchmove", setFromTouchEvent);
       } else {
         window.removeEventListener("mousemove", setFromMouseEvent);

@@ -10,7 +10,10 @@ const App = () => {
 
   return (
     <dragContext.Provider value={ctx}>
-      <div ref={AppRef} className={`App ${isMobile && ctx.drag ? "lock" : ""}`}>
+      <div
+        ref={AppRef}
+        className={`App ${isMobile && ctx.isDrag ? "lock" : ""}`}
+      >
         <Playground AppRef={AppRef} />
       </div>
     </dragContext.Provider>

@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import isMobile from "ismobilejs";
+import { isMobile } from "react-device-detect";
 import firebase from "firebase/compat/app";
 import db from "../../configs/FirebaseConfig";
 import { dragContext } from "../../hooks/useDrag";
@@ -28,16 +28,16 @@ type BlocksLog = {
 };
 
 // Playground
-type PlaygroundProps = {
+type Props = {
   AppRef: RefObject<HTMLDivElement | null>;
 };
 
-export const Playground = (props: PlaygroundProps) => {
+export const Playground = (props: Props) => {
   const { AppRef } = props;
   const App = AppRef.current;
 
   const dbRef = db.collection("blocks_2023").doc("position");
-  const { drag, setIsDrag } = useContext(dragContext);
+  const { isDrag, setIsDrag } = useContext(dragContext);
   const movement = UseMousePosition();
 
   const [blocks, setBlocks] = useState(blocksData);
@@ -88,7 +88,7 @@ export const Playground = (props: PlaygroundProps) => {
 
         if (el) {
           const pos = el.getBoundingClientRect();
-          if (isMobile().any) {
+          if (isMobile) {
             x = pos.x + App.scrollLeft;
             y = pos.y + App.scrollTop;
           } else {
@@ -127,14 +127,14 @@ export const Playground = (props: PlaygroundProps) => {
       }
     };
 
-    if (isMobile().any) {
+    if (isMobile) {
       window.addEventListener("touchend", onMouseUpHandler);
     } else {
       window.addEventListener("mouseup", onMouseUpHandler);
     }
 
     return () => {
-      if (isMobile().any) {
+      if (isMobile) {
         window.removeEventListener("touchend", onMouseUpHandler);
       } else {
         window.removeEventListener("mouseup", onMouseUpHandler);
@@ -146,13 +146,13 @@ export const Playground = (props: PlaygroundProps) => {
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (!App || !drag || !current) return;
+      if (!App || !isDrag || !current) return;
 
       const blockPosition = current.getBoundingClientRect();
       let left;
       let top;
 
-      if (isMobile().any) {
+      if (isMobile) {
         left = movement.x - blockPosition.width / 2 + App.scrollLeft;
         top = movement.y - blockPosition.height / 2 + App.scrollTop;
       } else {
@@ -175,20 +175,20 @@ export const Playground = (props: PlaygroundProps) => {
       current.style.left = `${left}px`;
       current.style.top = `${top}px`;
 
-      if (isMobile().any && e.target === current) {
+      if (isMobile && e.target === current) {
         e.preventDefault();
         e.stopPropagation();
       }
     };
 
-    if (isMobile().any) {
+    if (isMobile) {
       window.addEventListener("touchmove", onMoveHandler, { passive: false });
     } else {
       window.addEventListener("mousemove", onMoveHandler);
     }
 
     return () => {
-      if (isMobile().any) {
+      if (isMobile) {
         window.removeEventListener("touchmove", onMoveHandler);
       } else {
         window.removeEventListener("mousemove", onMoveHandler);
@@ -203,6 +203,7 @@ export const Playground = (props: PlaygroundProps) => {
         <Block
           key={key}
           id={value.id}
+          color={value.color}
           width={value.width}
           height={value.height}
           defaultX={value.defaultX}

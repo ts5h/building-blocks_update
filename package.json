@@ -11,7 +11,6 @@
     "@types/react": "^18.0.29",
     "@types/react-dom": "^18.0.11",
     "firebase": "^9.18.0",
-    "ismobilejs": "^1.1.1",
     "react": "^18.2.0",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18.2.0",

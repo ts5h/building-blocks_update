@@ -20,7 +20,6 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   firebase: ^9.18.0
   husky: ^8.0.3
-  ismobilejs: ^1.1.1
   lint-staged: ^13.2.0
   react: ^18.2.0
   react-device-detect: ^2.2.3
@@ -39,7 +38,6 @@ dependencies:
   '@types/react': 18.0.29
   '@types/react-dom': 18.0.11
   firebase: 9.18.0
-  ismobilejs: 1.1.1
   react: 18.2.0
   react-device-detect: 2.2.3_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
@@ -6469,10 +6467,6 @@ packages:
 
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
-
-  /ismobilejs/1.1.1:
-    resolution: {integrity: sha512-VaFW53yt8QO61k2WJui0dHf4SlL8lxBofUuUmwBo0ljPk0Drz2TiuDW4jo3wDcv41qy/SxrJ+VAzJ/qYqsmzRw==}
-    dev: false
 
   /istanbul-lib-coverage/3.2.0:
     resolution: {integrity: sha512-eOeJ5BHCmHYvQK7xt9GkdHuzuCGS1Y6g9Gvnx3Ym33fz/HpLRYxiS0wHNr+m/MBC8B647Xt608vCDEvhl9c6Mw==}
