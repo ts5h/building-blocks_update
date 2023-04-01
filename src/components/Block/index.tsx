@@ -5,19 +5,28 @@ import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
 type Props = BlocksType & {
+  color: string;
   current: HTMLDivElement | null;
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
 };
 
 export const Block = (props: Props) => {
-  const { id, width, height, defaultX, defaultY, current, setCurrentElement } =
-    props;
+  const {
+    id,
+    width,
+    height,
+    defaultX,
+    defaultY,
+    color,
+    current,
+    setCurrentElement,
+  } = props;
 
   const { isDrag } = useContext(dragContext);
   const [, idNum] = id.split("_");
   const [directStyles, setDirectStyles] = useState({
-    backgroundColor: "#444",
     zIndex: 0,
+    backgroundColor: color,
   });
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
@@ -39,13 +48,13 @@ export const Block = (props: Props) => {
   useEffect(() => {
     if (isDrag && current?.id === id) {
       setDirectStyles({
-        backgroundColor: "#555",
         zIndex: 200,
+        backgroundColor: "#555",
       });
     } else {
       setDirectStyles({
-        backgroundColor: "#444",
         zIndex: parseInt(idNum, 10),
+        backgroundColor: color,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

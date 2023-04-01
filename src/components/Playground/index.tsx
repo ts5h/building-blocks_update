@@ -10,6 +10,7 @@ import firebase from "firebase/compat/app";
 import db from "../../configs/FirebaseConfig";
 import { dragContext } from "../../hooks/useDrag";
 import UseMousePosition from "../../hooks/UseMousePosition";
+import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
@@ -43,6 +44,13 @@ export const Playground = (props: Props) => {
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
 
+  const getMyColor = useCallback((id: string) => {
+    const [, idNumStr] = id.split("_");
+    const idNum = parseInt(idNumStr, 10);
+
+    return colors[idNum % colors.length];
+  }, []);
+
   // Get blocks coordination on load and updated
   useEffect(() => {
     const unsubscribe = dbRef.onSnapshot((snapshot) => {
@@ -55,7 +63,6 @@ export const Playground = (props: Props) => {
 
         return {
           id: block.id,
-          color: "",
           defaultX: block.x < 0 ? 0 : block.x,
           defaultY: block.y < 0 ? 0 : block.y,
           width: blocksData[idNum].width,
@@ -208,7 +215,7 @@ export const Playground = (props: Props) => {
         <Block
           key={key}
           id={value.id}
-          color={value.color}
+          color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
           defaultX={value.defaultX}
