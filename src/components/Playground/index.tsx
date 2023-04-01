@@ -22,6 +22,7 @@ type BlocksLog = {
       id: string;
       x: number;
       y: number;
+      z: number;
     },
   ];
   createdAt: firebase.firestore.Timestamp;
@@ -65,6 +66,7 @@ export const Playground = (props: Props) => {
           id: block.id,
           defaultX: block.x < 0 ? 0 : block.x,
           defaultY: block.y < 0 ? 0 : block.y,
+          defaultZ: block.z,
           width: blocksData[idNum].width,
           height: blocksData[idNum].height,
         };
@@ -92,11 +94,12 @@ export const Playground = (props: Props) => {
     (e: MouseEvent | TouchEvent) => {
       if (!App || e.target !== current || !current) return;
 
-      const updatedBlocks = [];
+      let updatedBlocks = [];
       for (let i = 0; i < blocks.length; i += 1) {
-        const el = document.querySelector(`#${blocks[i].id}`);
+        const el = document.getElementById(blocks[i].id);
         let x: number;
         let y: number;
+        let z: number;
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -107,13 +110,27 @@ export const Playground = (props: Props) => {
             x = pos.x + window.scrollX;
             y = pos.y + window.scrollY;
           }
+
+          // TODO: Fix this
+          z = parseInt(el.style.zIndex, 10);
+          console.log(z);
         } else {
           x = blocks[i].defaultX;
           y = blocks[i].defaultY;
+          z = blocks[i].defaultZ;
         }
 
-        updatedBlocks.push({ id: blocks[i].id, x, y });
+        updatedBlocks.push({ id: blocks[i].id, x, y, z });
       }
+
+      // Sort by z-index and reassign z-index
+      // updatedBlocks.sort((a, b) => {
+      //   return b.z - a.z > 0 ? -1 : 1;
+      // });
+
+      updatedBlocks = updatedBlocks.map((block, index) => {
+        return { ...block, z: index };
+      });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
@@ -220,6 +237,7 @@ export const Playground = (props: Props) => {
           height={value.height}
           defaultX={value.defaultX}
           defaultY={value.defaultY}
+          defaultZ={value.defaultZ}
           current={current}
           setCurrentElement={setCurrentElement}
         />

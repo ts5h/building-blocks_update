@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import { dragContext } from "../../hooks/useDrag";
+import { blocksData } from "../../data/blocksData";
 import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
@@ -48,12 +49,15 @@ export const Block = (props: Props) => {
   useEffect(() => {
     if (isDrag && current?.id === id) {
       setDirectStyles({
-        zIndex: 200,
+        zIndex: blocksData.length,
         backgroundColor: "#555",
       });
     } else {
+      const el = document.getElementById(id);
+      if (!el) return;
       setDirectStyles({
-        zIndex: parseInt(idNum, 10),
+        // TODO: Fix this
+        zIndex: parseInt(getComputedStyle(el).zIndex, 10),
         backgroundColor: color,
       });
     }

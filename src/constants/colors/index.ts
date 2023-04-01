@@ -1,4 +1,5 @@
 // https://johndecember.com/html/spec/color16.html
+// Except white
 export const colors: string[] = [
   "aqua",
   "black",
