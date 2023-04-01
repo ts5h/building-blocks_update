@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {isMobile} from "react-device-detect";
+import { isMobile } from "react-device-detect";
 
 const UseMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
