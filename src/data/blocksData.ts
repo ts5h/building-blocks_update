@@ -1049,8 +1049,8 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_131",
-    width: 94,
-    height: 95,
+    width: 62,
+    height: 56,
     defaultX: 55,
     defaultY: 534,
     defaultZ: 131,
@@ -1153,7 +1153,7 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_144",
-    width: 71,
+    width: 16,
     height: 88,
     defaultX: 317,
     defaultY: 450,
@@ -1161,8 +1161,8 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_145",
-    width: 78,
-    height: 79,
+    width: 60,
+    height: 24,
     defaultX: 3,
     defaultY: 925,
     defaultZ: 145,
