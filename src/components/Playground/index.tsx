@@ -125,10 +125,15 @@ export const Playground = (props: Props) => {
         return a.z < b.z ? -1 : 1;
       });
 
-      // TODO: Need to be fixed
       updatedBlocks = updatedBlocks.map((block, index) => {
         return { ...block, z: index };
       });
+
+      // updatedBlocks.sort((a, b) => {
+      //   const aIdNum = getIdNumber(a.id);
+      //   const bIdNum = getIdNumber(b.id);
+      //   return aIdNum < bIdNum ? -1 : 1;
+      // });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
