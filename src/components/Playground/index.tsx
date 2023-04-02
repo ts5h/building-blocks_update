@@ -226,9 +226,9 @@ export const Playground = (props: Props) => {
           color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
-          defaultX={value.defaultX}
-          defaultY={value.defaultY}
-          defaultZ={value.defaultZ}
+          x={value.defaultX}
+          y={value.defaultY}
+          z={value.defaultZ}
           current={current}
           setCurrentElement={setCurrentElement}
         />

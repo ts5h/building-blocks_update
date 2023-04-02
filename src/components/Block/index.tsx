@@ -5,24 +5,18 @@ import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
-type Props = BlocksType & {
+type Props = Pick<BlocksType, "id" | "width" | "height"> & {
+  x: number;
+  y: number;
+  z: number;
   color: string;
   current: HTMLDivElement | null;
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
 };
 
 export const Block = (props: Props) => {
-  const {
-    id,
-    width,
-    height,
-    defaultX,
-    defaultY,
-    defaultZ,
-    color,
-    current,
-    setCurrentElement,
-  } = props;
+  const { id, width, height, x, y, z, color, current, setCurrentElement } =
+    props;
 
   const { isDrag } = useContext(dragContext);
   const [bgColor, setBgColor] = useState(color);
@@ -44,6 +38,7 @@ export const Block = (props: Props) => {
   };
 
   useEffect(() => {
+    // TODO: Play and stop sound
     if (isDrag && current?.id === id) {
       setBgColor(tinyColor(color).lighten(10).toString());
     } else {
@@ -61,12 +56,12 @@ export const Block = (props: Props) => {
       onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
       style={{
-        zIndex: defaultZ,
-        backgroundColor: bgColor,
         width,
         height,
-        left: defaultX,
-        top: defaultY,
+        left: x,
+        top: y,
+        zIndex: z,
+        backgroundColor: bgColor,
       }}
     >
       {id}
