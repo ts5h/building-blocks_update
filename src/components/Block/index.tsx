@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import tinyColor from "tinycolor2";
 import { dragContext } from "../../hooks/useDrag";
+import { useSound } from "./useSound";
 import Styles from "../../scss/components/Block.module.scss";
 
 type Props = Pick<BlocksType, "id" | "width" | "height"> & {
@@ -32,9 +33,10 @@ export const Block = (props: Props) => {
   } = props;
 
   const { isDrag } = useContext(dragContext);
-
   const [bgColor, setBgColor] = useState(color);
   const [zIndex, setZIndex] = useState(z);
+
+  const { playLoopSound, stopLoopSound } = useSound();
 
   // Set again z-index when reload etc.
   useEffect(() => {
@@ -43,7 +45,6 @@ export const Block = (props: Props) => {
 
   // Set hover
   useEffect(() => {
-    // TODO: Play and stop sound
     const blockId = `block_${id}`;
     if (isDrag && current?.id === blockId) {
       setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
