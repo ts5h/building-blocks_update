@@ -150,7 +150,6 @@ export const Playground = (props: Props) => {
         updatedAt: firebase.firestore.Timestamp.now(),
       });
     },
-
     [AppRef, blocks, current, dbRef, getIdNumber],
   );
 
