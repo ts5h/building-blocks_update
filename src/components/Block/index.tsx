@@ -5,12 +5,15 @@ import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
 type Props = Pick<BlocksType, "id" | "width" | "height"> & {
+  current: HTMLDivElement | null;
+  setCurrentElement: (
+    state: boolean,
+    divElement: HTMLDivElement | null,
+  ) => void;
   x: number;
   y: number;
   z: number;
   color: string;
-  current: HTMLDivElement | null;
-  setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
 };
 
 export const Block = (props: Props) => {

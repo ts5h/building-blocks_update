@@ -62,7 +62,7 @@ export const Playground = (props: Props) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks;
       if (!loadedBlocks) return;
 
-      const updateBlocks = loadedBlocks.map((block) => {
+      const updateBlocks: BlocksType[] = loadedBlocks.map((block) => {
         const idNum = getIdNumber(block.id);
         return {
           id: block.id,
@@ -78,8 +78,7 @@ export const Playground = (props: Props) => {
     });
 
     return () => unsubscribe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [dbRef, getIdNumber]);
 
   // Set current element via parent function
   const setCurrentElement = (
