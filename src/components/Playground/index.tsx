@@ -10,8 +10,8 @@ import firebase from "firebase/compat/app";
 import db from "../../configs/FirebaseConfig";
 import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
-import { dragContext } from "../../hooks/useDrag";
-import { useMousePosition } from "../../hooks/useMousePosition";
+import { dragContext } from "../../store/global/Drag";
+import { useMousePosition } from "../../store/global/MousePosition";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 

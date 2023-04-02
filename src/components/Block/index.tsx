@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import tinyColor from "tinycolor2";
-import { dragContext } from "../../hooks/useDrag";
-import { useSound } from "./useSound";
+import { dragContext } from "../../store/global/Drag";
+import { useSound } from "../../store/global/Sound";
 import Styles from "../../scss/components/Block.module.scss";
 
 type Props = Pick<BlocksType, "id" | "width" | "height"> & {
