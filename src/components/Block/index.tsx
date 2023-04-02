@@ -5,23 +5,36 @@ import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
 type Props = Pick<BlocksType, "id" | "width" | "height"> & {
+  x: number;
+  y: number;
+  z: number;
+  color: string;
+  topZ: number;
   current: HTMLDivElement | null;
   setCurrentElement: (
     state: boolean,
     divElement: HTMLDivElement | null,
   ) => void;
-  x: number;
-  y: number;
-  z: number;
-  color: string;
 };
 
 export const Block = (props: Props) => {
-  const { id, width, height, x, y, z, color, current, setCurrentElement } =
-    props;
+  const {
+    id,
+    width,
+    height,
+    x,
+    y,
+    z,
+    color,
+    topZ,
+    current,
+    setCurrentElement,
+  } = props;
 
   const { isDrag } = useContext(dragContext);
+
   const [bgColor, setBgColor] = useState(color);
+  const [zIndex, setZIndex] = useState(z);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
@@ -43,10 +56,12 @@ export const Block = (props: Props) => {
     // TODO: Play and stop sound
     if (isDrag && current?.id === id) {
       setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
+      setZIndex(topZ);
     } else {
       setBgColor(color);
+      // zIndex holds
     }
-  }, [color, current?.id, id, isDrag]);
+  }, [color, current?.id, id, isDrag, topZ]);
 
   return (
     <div
@@ -62,7 +77,7 @@ export const Block = (props: Props) => {
         height,
         left: x,
         top: y,
-        zIndex: z,
+        zIndex,
         backgroundColor: bgColor,
       }}
     >

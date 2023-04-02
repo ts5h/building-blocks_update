@@ -112,7 +112,7 @@ export const Playground = (props: Props) => {
             y = pos.y + window.scrollY;
           }
 
-          z = parseInt(getComputedStyle(el).zIndex, 10);
+          z = blocks[i].defaultZ;
         } else {
           x = blocks[i].defaultX;
           y = blocks[i].defaultY;
@@ -220,12 +220,13 @@ export const Playground = (props: Props) => {
         <Block
           key={key}
           id={value.id}
-          color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
           x={value.defaultX}
           y={value.defaultY}
           z={value.defaultZ}
+          color={getMyColor(value.id)}
+          topZ={blocksData.length}
           current={current}
           setCurrentElement={setCurrentElement}
         />
