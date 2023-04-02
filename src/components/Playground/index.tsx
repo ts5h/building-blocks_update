@@ -81,13 +81,13 @@ export const Playground = (props: Props) => {
   }, [dbRef, getIdNumber]);
 
   // Set current element via parent function
-  const setCurrentElement = (
-    state: boolean,
-    divElement: HTMLDivElement | null,
-  ) => {
-    setIsDrag(state);
-    setCurrent(divElement);
-  };
+  const setCurrentElement = useCallback(
+    (state: boolean, divElement: HTMLDivElement | null) => {
+      setIsDrag(state);
+      setCurrent(divElement);
+    },
+    [setIsDrag],
+  );
 
   // Mouse up
   const updatePosition = useCallback(
