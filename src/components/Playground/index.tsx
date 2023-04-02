@@ -102,7 +102,10 @@ export const Playground = (props: Props) => {
         const el = document.getElementById(blocks[i].id);
         let x: number;
         let y: number;
-        const z = (el && parseInt(getComputedStyle(el).zIndex, 10)) || 0;
+        const z =
+          (el &&
+            parseInt(getComputedStyle(el).getPropertyValue("z-index"), 10)) ||
+          0;
 
         if (el) {
           const pos = el.getBoundingClientRect();
