@@ -841,15 +841,15 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_105",
-    width: 25,
-    height: 7,
+    width: 28,
+    height: 17,
     defaultX: 465,
     defaultY: 249,
     defaultZ: 105,
   },
   {
     id: "block_106",
-    width: 5,
+    width: 33,
     height: 27,
     defaultX: 474,
     defaultY: 445,
@@ -897,8 +897,8 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_112",
-    width: 9,
-    height: 3,
+    width: 12,
+    height: 34,
     defaultX: 21,
     defaultY: 97,
     defaultZ: 112,
@@ -977,7 +977,7 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_122",
-    width: 8,
+    width: 18,
     height: 54,
     defaultX: 289,
     defaultY: 422,
@@ -1050,7 +1050,7 @@ export const blocksData: BlocksType[] = [
   {
     id: "block_131",
     width: 54,
-    height: 3,
+    height: 10,
     defaultX: 101,
     defaultY: 88,
     defaultZ: 131,
@@ -1090,7 +1090,7 @@ export const blocksData: BlocksType[] = [
   {
     id: "block_136",
     width: 59,
-    height: 3,
+    height: 13,
     defaultX: 32,
     defaultY: 305,
     defaultZ: 136,
@@ -1098,7 +1098,7 @@ export const blocksData: BlocksType[] = [
   {
     id: "block_137",
     width: 25,
-    height: 8,
+    height: 12,
     defaultX: 313,
     defaultY: 159,
     defaultZ: 137,
@@ -1177,8 +1177,8 @@ export const blocksData: BlocksType[] = [
   },
   {
     id: "block_147",
-    width: 12,
-    height: 10,
+    width: 24,
+    height: 20,
     defaultX: 497,
     defaultY: 175,
     defaultZ: 147,
