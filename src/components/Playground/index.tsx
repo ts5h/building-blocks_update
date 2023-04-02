@@ -11,7 +11,7 @@ import db from "../../configs/FirebaseConfig";
 import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
 import { dragContext } from "../../hooks/useDrag";
-import UseMousePosition from "../../hooks/UseMousePosition";
+import { useMousePosition } from "../../hooks/useMousePosition";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 
@@ -35,14 +35,14 @@ type Props = {
 
 export const Playground = (props: Props) => {
   const { AppRef } = props;
-  const App = AppRef.current;
-
   const dbRef = db.collection("blocks_2023").doc("position");
   const { isDrag, setIsDrag } = useContext(dragContext);
-  const movement = UseMousePosition();
+  const { position } = useMousePosition();
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
+
+  const windowLimit = 2000;
 
   const getIdNumber = useCallback((id: string) => {
     const [, idNumberString] = id.split("_");
@@ -93,7 +93,8 @@ export const Playground = (props: Props) => {
   // Mouse up
   const updatePosition = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!App || e.target !== current || !current) return;
+      if (!AppRef.current || e.target !== current || !current) return;
+      const App = AppRef.current;
 
       const updatedBlocks = [];
       for (let i = 0; i < blocks.length; i += 1) {
@@ -130,8 +131,7 @@ export const Playground = (props: Props) => {
         updatedAt: firebase.firestore.Timestamp.now(),
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [App, blocks, current],
+    [AppRef, blocks, current, dbRef],
   );
 
   useEffect(() => {
@@ -159,36 +159,36 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mouseup", onMouseUpHandler);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatePosition]);
+  }, [setIsDrag, updatePosition]);
 
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (!App || !isDrag || !current) return;
+      if (!AppRef.current || !isDrag || !current) return;
+      const App = AppRef.current;
 
       const blockPosition = current.getBoundingClientRect();
       let left;
       let top;
 
       if (isMobile) {
-        left = movement.x - blockPosition.width / 2 + App.scrollLeft;
-        top = movement.y - blockPosition.height / 2 + App.scrollTop;
+        left = position.x - blockPosition.width / 2 + App.scrollLeft;
+        top = position.y - blockPosition.height / 2 + App.scrollTop;
       } else {
-        left = movement.x + blockPosition.x + window.scrollX;
-        top = movement.y + blockPosition.y + window.scrollY;
+        left = position.x + blockPosition.x + window.scrollX;
+        top = position.y + blockPosition.y + window.scrollY;
       }
 
       if (left < 0) {
         left = 0;
-      } else if (left > 2000 - blockPosition.width) {
-        left = 2000 - blockPosition.width;
+      } else if (left > windowLimit - blockPosition.width) {
+        left = windowLimit - blockPosition.width;
       }
 
       if (top < 0) {
         top = 0;
-      } else if (top > 2000 - blockPosition.height) {
-        top = 2000 - blockPosition.height;
+      } else if (top > windowLimit - blockPosition.height) {
+        top = windowLimit - blockPosition.height;
       }
 
       current.style.left = `${left}px`;
@@ -213,8 +213,7 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mousemove", onMoveHandler);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [App, movement]);
+  }, [position, isDrag, current, AppRef]);
 
   return (
     <div id="playground" className={Styles.playground}>
