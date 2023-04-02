@@ -41,6 +41,7 @@ export const Playground = (props: Props) => {
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
+  const [topZ, setTopZ] = useState(blocks.length);
 
   const windowLimit = 2000;
 
@@ -89,18 +90,24 @@ export const Playground = (props: Props) => {
     [setIsDrag],
   );
 
-  // Mouse up
+  // Update DB on mouse up
   const updatePosition = useCallback(
     (e: MouseEvent | TouchEvent) => {
       if (!AppRef.current || e.target !== current || !current) return;
       const App = AppRef.current;
 
-      const updatedBlocks = [];
+      let updatedBlocks = [];
       for (let i = 0; i < blocks.length; i += 1) {
         const el = document.getElementById(blocks[i].id);
         let x: number;
         let y: number;
-        let z: number;
+        const z =
+          (el &&
+            parseInt(
+              window.getComputedStyle(el).getPropertyValue("z-index"),
+              10,
+            )) ||
+          0;
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -111,16 +118,22 @@ export const Playground = (props: Props) => {
             x = pos.x + window.scrollX;
             y = pos.y + window.scrollY;
           }
-
-          z = blocks[i].defaultZ;
         } else {
           x = blocks[i].defaultX;
           y = blocks[i].defaultY;
-          z = blocks[i].defaultZ;
         }
 
         updatedBlocks.push({ id: blocks[i].id, x, y, z });
       }
+
+      // Sort blocks by z-index
+      updatedBlocks = updatedBlocks
+        .sort((a, b) => {
+          return a.z < b.z ? -1 : 1;
+        })
+        .map((block, index) => {
+          return { ...block, z: index };
+        });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
@@ -133,10 +146,15 @@ export const Playground = (props: Props) => {
     [AppRef, blocks, current, dbRef],
   );
 
+  // Mouse up
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      if (current) {
+        // To reduce screen flickering, not change the whole blocks, except for elements related to pointer actions.
+        setTopZ((prev) => prev + 1);
+        setCurrent(null);
+      }
       setIsDrag(false);
-      setCurrent(null);
 
       try {
         updatePosition(e);
@@ -158,7 +176,7 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mouseup", onMouseUpHandler);
       }
     };
-  }, [setIsDrag, updatePosition]);
+  }, [current, setIsDrag, updatePosition]);
 
   // Mouse move
   useEffect(() => {
@@ -226,7 +244,7 @@ export const Playground = (props: Props) => {
           y={value.defaultY}
           z={value.defaultZ}
           color={getMyColor(value.id)}
-          topZ={blocksData.length}
+          topZ={topZ}
           current={current}
           setCurrentElement={setCurrentElement}
         />

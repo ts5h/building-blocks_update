@@ -59,7 +59,7 @@ export const Block = (props: Props) => {
       setZIndex(topZ);
     } else {
       setBgColor(color);
-      // zIndex holds
+      // Hold current z-index
     }
   }, [color, current?.id, id, isDrag, topZ]);
 
