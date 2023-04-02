@@ -1,36 +1,57 @@
 import React, { useContext, useEffect, useState } from "react";
-import tinyColor from "tinycolor2";
 import { isMobile } from "react-device-detect";
+import tinyColor from "tinycolor2";
 import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
-// Each block
-type Props = BlocksType & {
-  idNumber: number;
+type Props = Pick<BlocksType, "id" | "width" | "height"> & {
+  x: number;
+  y: number;
+  z: number;
   color: string;
+  topZ: number;
   current: HTMLDivElement | null;
-  setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
+  setCurrentElement: (
+    state: boolean,
+    divElement: HTMLDivElement | null,
+  ) => void;
 };
 
 export const Block = (props: Props) => {
   const {
     id,
-    idNumber,
     width,
     height,
-    defaultX,
-    defaultY,
-    defaultZ,
+    x,
+    y,
+    z,
     color,
+    topZ,
     current,
     setCurrentElement,
   } = props;
 
   const { isDrag } = useContext(dragContext);
-  const [directStyles, setDirectStyles] = useState({
-    zIndex: 0,
-    backgroundColor: color,
-  });
+
+  const [bgColor, setBgColor] = useState(color);
+  const [zIndex, setZIndex] = useState(z);
+
+  // Set again z-index when reload etc.
+  useEffect(() => {
+    setZIndex(z);
+  }, [z]);
+
+  // Set hover
+  useEffect(() => {
+    // TODO: Play and stop sound
+    if (isDrag && current?.id === id) {
+      setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
+      setZIndex(topZ);
+    } else {
+      setBgColor(color);
+      // Hold current z-index
+    }
+  }, [color, current?.id, id, isDrag, topZ]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
@@ -48,36 +69,22 @@ export const Block = (props: Props) => {
     e.preventDefault();
   };
 
-  useEffect(() => {
-    if (isDrag && current?.id === id) {
-      setDirectStyles({
-        zIndex: 200,
-        backgroundColor: tinyColor(color).lighten(10).toString(),
-      });
-    } else {
-      setDirectStyles({
-        zIndex: defaultZ,
-        backgroundColor: color,
-      });
-    }
-  }, [color, current, defaultZ, id, idNumber, isDrag]);
-
   return (
     <div
-      id={id}
       role="button"
+      id={id}
+      className={`block ${Styles.block}`}
       tabIndex={-1}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
-      className={`block ${Styles.block}`}
       style={{
-        zIndex: directStyles.zIndex,
-        backgroundColor: directStyles.backgroundColor,
         width,
         height,
-        left: defaultX,
-        top: defaultY,
+        left: x,
+        top: y,
+        zIndex,
+        backgroundColor: bgColor,
       }}
     >
       {id}

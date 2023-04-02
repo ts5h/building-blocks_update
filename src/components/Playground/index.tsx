@@ -8,42 +8,42 @@ import React, {
 import { isMobile } from "react-device-detect";
 import firebase from "firebase/compat/app";
 import db from "../../configs/FirebaseConfig";
-import { dragContext } from "../../hooks/useDrag";
-import UseMousePosition from "../../hooks/UseMousePosition";
 import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
+import { dragContext } from "../../hooks/useDrag";
+import { useMousePosition } from "../../hooks/useMousePosition";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 
 // Blocks data types in DB
+type Blocks = {
+  id: string;
+  x: number;
+  y: number;
+  z: number;
+};
+
 type BlocksLog = {
-  blocks: [
-    {
-      id: string;
-      x: number;
-      y: number;
-      z: number;
-    },
-  ];
+  blocks: Blocks[];
   createdAt: firebase.firestore.Timestamp;
   updatedAt: firebase.firestore.Timestamp;
 };
 
-// Playground
 type Props = {
   AppRef: RefObject<HTMLDivElement | null>;
 };
 
 export const Playground = (props: Props) => {
   const { AppRef } = props;
-  const App = AppRef.current;
-
   const dbRef = db.collection("blocks_2023").doc("position");
   const { isDrag, setIsDrag } = useContext(dragContext);
-  const movement = UseMousePosition();
+  const { position } = useMousePosition();
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
+  const [topZ, setTopZ] = useState(blocks.length);
+
+  const windowLimit = 2000;
 
   const getIdNumber = useCallback((id: string) => {
     const [, idNumberString] = id.split("_");
@@ -63,12 +63,12 @@ export const Playground = (props: Props) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks;
       if (!loadedBlocks) return;
 
-      const updateBlocks = loadedBlocks.map((block) => {
+      const updateBlocks: BlocksType[] = loadedBlocks.map((block) => {
         const idNum = getIdNumber(block.id);
         return {
           id: block.id,
-          defaultX: block.x < 0 ? 0 : block.x,
-          defaultY: block.y < 0 ? 0 : block.y,
+          defaultX: block.x,
+          defaultY: block.y,
           defaultZ: block.z,
           width: blocksData[idNum].width,
           height: blocksData[idNum].height,
@@ -80,28 +80,32 @@ export const Playground = (props: Props) => {
 
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [getIdNumber, topZ]);
 
   // Set current element via parent function
-  const setCurrentElement = (
-    state: boolean,
-    divElement: HTMLDivElement | null,
-  ) => {
-    setIsDrag(state);
-    setCurrent(divElement);
-  };
+  const setCurrentElement = useCallback(
+    (state: boolean, divElement: HTMLDivElement | null) => {
+      setIsDrag(state);
+      setCurrent(divElement);
+    },
+    [setIsDrag],
+  );
 
-  // Mouse up
+  // Update DB on mouse up
   const updatePosition = useCallback(
     (e: MouseEvent | TouchEvent) => {
-      if (!App || e.target !== current || !current) return;
+      if (!AppRef.current || e.target !== current || !current) return;
+      const App = AppRef.current;
 
-      const updatedBlocks = [];
+      let updatedBlocks: Blocks[] = [];
       for (let i = 0; i < blocks.length; i += 1) {
         const el = document.getElementById(blocks[i].id);
         let x: number;
         let y: number;
-        let z: number;
+        const z =
+          (el &&
+            parseInt(getComputedStyle(el).getPropertyValue("z-index"), 10)) ||
+          0;
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -112,33 +116,52 @@ export const Playground = (props: Props) => {
             x = pos.x + window.scrollX;
             y = pos.y + window.scrollY;
           }
-
-          z = parseInt(getComputedStyle(el).zIndex, 10);
         } else {
           x = blocks[i].defaultX;
           y = blocks[i].defaultY;
-          z = blocks[i].defaultZ;
         }
 
         updatedBlocks.push({ id: blocks[i].id, x, y, z });
       }
 
+      // Sort blocks by z-index
+      updatedBlocks.sort((a, b) => {
+        return a.z < b.z ? -1 : 1;
+      });
+
+      // Re-numbering z-index
+      updatedBlocks = updatedBlocks.map((block, index) => {
+        return { ...block, z: index };
+      });
+
+      // Re-sort blocks by id (number)
+      updatedBlocks.sort((a, b) => {
+        const aIdNum = getIdNumber(a.id);
+        const bIdNum = getIdNumber(b.id);
+        return aIdNum < bIdNum ? -1 : 1;
+      });
+
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
+
       // eslint-disable-next-line no-void
       void dbRef.update({
         blocks: updatedBlocks,
         updatedAt: firebase.firestore.Timestamp.now(),
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [App, blocks, current],
+    [AppRef, blocks, current, dbRef, getIdNumber],
   );
 
+  // Mouse up
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      if (current) {
+        // To reduce screen flickering, not change the whole blocks, except for elements related to pointer actions.
+        setTopZ((prev) => prev + 1);
+        setCurrent(null);
+      }
       setIsDrag(false);
-      setCurrent(null);
 
       try {
         updatePosition(e);
@@ -160,36 +183,36 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mouseup", onMouseUpHandler);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [updatePosition]);
+  }, [current, setIsDrag, updatePosition]);
 
   // Mouse move
   useEffect(() => {
     const onMoveHandler = (e: MouseEvent | TouchEvent) => {
-      if (!App || !isDrag || !current) return;
+      if (!AppRef.current || !isDrag || !current) return;
+      const App = AppRef.current;
 
       const blockPosition = current.getBoundingClientRect();
       let left;
       let top;
 
       if (isMobile) {
-        left = movement.x - blockPosition.width / 2 + App.scrollLeft;
-        top = movement.y - blockPosition.height / 2 + App.scrollTop;
+        left = position.x - blockPosition.width / 2 + App.scrollLeft;
+        top = position.y - blockPosition.height / 2 + App.scrollTop;
       } else {
-        left = movement.x + blockPosition.x + window.scrollX;
-        top = movement.y + blockPosition.y + window.scrollY;
+        left = position.x + blockPosition.x + window.scrollX;
+        top = position.y + blockPosition.y + window.scrollY;
       }
 
       if (left < 0) {
         left = 0;
-      } else if (left > 2000 - blockPosition.width) {
-        left = 2000 - blockPosition.width;
+      } else if (left > windowLimit - blockPosition.width) {
+        left = windowLimit - blockPosition.width;
       }
 
       if (top < 0) {
         top = 0;
-      } else if (top > 2000 - blockPosition.height) {
-        top = 2000 - blockPosition.height;
+      } else if (top > windowLimit - blockPosition.height) {
+        top = windowLimit - blockPosition.height;
       }
 
       current.style.left = `${left}px`;
@@ -214,8 +237,7 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mousemove", onMoveHandler);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [App, movement]);
+  }, [position, isDrag, current, AppRef]);
 
   return (
     <div id="playground" className={Styles.playground}>
@@ -223,13 +245,13 @@ export const Playground = (props: Props) => {
         <Block
           key={key}
           id={value.id}
-          idNumber={getIdNumber(value.id)}
-          color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
-          defaultX={value.defaultX}
-          defaultY={value.defaultY}
-          defaultZ={value.defaultZ}
+          x={value.defaultX}
+          y={value.defaultY}
+          z={value.defaultZ}
+          color={getMyColor(value.id)}
+          topZ={topZ}
           current={current}
           setCurrentElement={setCurrentElement}
         />

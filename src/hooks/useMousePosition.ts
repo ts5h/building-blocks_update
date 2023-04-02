@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 
-const UseMousePosition = () => {
+export const useMousePosition = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const UseMousePosition = () => {
     };
   }, []);
 
-  return position;
+  return {
+    position,
+  };
 };
-
-export default UseMousePosition;
