@@ -42,7 +42,7 @@ export const Block = (props: Props) => {
   useEffect(() => {
     // TODO: Play and stop sound
     if (isDrag && current?.id === id) {
-      setBgColor(tinyColor(color).lighten(10).toString());
+      setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
     } else {
       setBgColor(color);
     }
