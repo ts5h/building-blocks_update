@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { isMobile } from "react-device-detect";
-import { dragContext, useDrag } from "./hooks/useDrag";
+import { dragContext, useDrag } from "./store/global/Drag";
 import { Playground } from "./components/Playground";
 import "./scss/App.scss";
 
