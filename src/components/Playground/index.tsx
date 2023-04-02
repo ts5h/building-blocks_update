@@ -8,10 +8,10 @@ import React, {
 import { isMobile } from "react-device-detect";
 import firebase from "firebase/compat/app";
 import db from "../../configs/FirebaseConfig";
-import { dragContext } from "../../hooks/useDrag";
-import UseMousePosition from "../../hooks/UseMousePosition";
 import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
+import { dragContext } from "../../hooks/useDrag";
+import UseMousePosition from "../../hooks/UseMousePosition";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
-import tinyColor from "tinycolor2";
 import { isMobile } from "react-device-detect";
+import tinyColor from "tinycolor2";
 import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
