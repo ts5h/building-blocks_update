@@ -16,15 +16,15 @@ import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 
 // Blocks data types in DB
+type Blocks = {
+  id: string;
+  x: number;
+  y: number;
+  z: number;
+};
+
 type BlocksLog = {
-  blocks: [
-    {
-      id: string;
-      x: number;
-      y: number;
-      z: number;
-    },
-  ];
+  blocks: Blocks[];
   createdAt: firebase.firestore.Timestamp;
   updatedAt: firebase.firestore.Timestamp;
 };
@@ -96,18 +96,12 @@ export const Playground = (props: Props) => {
       if (!AppRef.current || e.target !== current || !current) return;
       const App = AppRef.current;
 
-      let updatedBlocks = [];
+      let updatedBlocks: Blocks[] = [];
       for (let i = 0; i < blocks.length; i += 1) {
         const el = document.getElementById(blocks[i].id);
         let x: number;
         let y: number;
-        const z =
-          (el &&
-            parseInt(
-              window.getComputedStyle(el).getPropertyValue("z-index"),
-              10,
-            )) ||
-          0;
+        const z = (el && parseInt(getComputedStyle(el).zIndex, 10)) || 0;
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -127,16 +121,18 @@ export const Playground = (props: Props) => {
       }
 
       // Sort blocks by z-index
-      updatedBlocks = updatedBlocks
-        .sort((a, b) => {
-          return a.z < b.z ? -1 : 1;
-        })
-        .map((block, index) => {
-          return { ...block, z: index };
-        });
+      updatedBlocks.sort((a, b) => {
+        return a.z < b.z ? -1 : 1;
+      });
+
+      // TODO: Need to be fixed
+      updatedBlocks = updatedBlocks.map((block, index) => {
+        return { ...block, z: index };
+      });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
+
       // eslint-disable-next-line no-void
       void dbRef.update({
         blocks: updatedBlocks,
