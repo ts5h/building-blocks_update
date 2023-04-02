@@ -67,8 +67,8 @@ export const Playground = (props: Props) => {
         const idNum = getIdNumber(block.id);
         return {
           id: block.id,
-          defaultX: block.x < 0 ? 0 : block.x,
-          defaultY: block.y < 0 ? 0 : block.y,
+          defaultX: block.x,
+          defaultY: block.y,
           defaultZ: block.z,
           width: blocksData[idNum].width,
           height: blocksData[idNum].height,
@@ -79,7 +79,8 @@ export const Playground = (props: Props) => {
     });
 
     return () => unsubscribe();
-  }, [dbRef, getIdNumber]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [getIdNumber, topZ]);
 
   // Set current element via parent function
   const setCurrentElement = useCallback(
@@ -102,6 +103,9 @@ export const Playground = (props: Props) => {
         let x: number;
         let y: number;
         const z = (el && parseInt(getComputedStyle(el).zIndex, 10)) || 0;
+        if (blocks[i].id === "block_118") {
+          console.log(z);
+        }
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -122,18 +126,18 @@ export const Playground = (props: Props) => {
 
       // Sort blocks by z-index
       updatedBlocks.sort((a, b) => {
-        return a.z < b.z ? -1 : 1;
+        return a.z - b.z;
       });
 
       updatedBlocks = updatedBlocks.map((block, index) => {
         return { ...block, z: index };
       });
 
-      // updatedBlocks.sort((a, b) => {
-      //   const aIdNum = getIdNumber(a.id);
-      //   const bIdNum = getIdNumber(b.id);
-      //   return aIdNum < bIdNum ? -1 : 1;
-      // });
+      updatedBlocks.sort((a, b) => {
+        const aIdNum = getIdNumber(a.id);
+        const bIdNum = getIdNumber(b.id);
+        return aIdNum - bIdNum;
+      });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
@@ -144,7 +148,8 @@ export const Playground = (props: Props) => {
         updatedAt: firebase.firestore.Timestamp.now(),
       });
     },
-    [AppRef, blocks, current, dbRef],
+
+    [AppRef, blocks, current, dbRef, getIdNumber],
   );
 
   // Mouse up
