@@ -103,9 +103,6 @@ export const Playground = (props: Props) => {
         let x: number;
         let y: number;
         const z = (el && parseInt(getComputedStyle(el).zIndex, 10)) || 0;
-        if (blocks[i].id === "block_118") {
-          console.log(z);
-        }
 
         if (el) {
           const pos = el.getBoundingClientRect();
@@ -126,17 +123,19 @@ export const Playground = (props: Props) => {
 
       // Sort blocks by z-index
       updatedBlocks.sort((a, b) => {
-        return a.z - b.z;
+        return a.z < b.z ? -1 : 1;
       });
 
+      // Re-numbering z-index
       updatedBlocks = updatedBlocks.map((block, index) => {
         return { ...block, z: index };
       });
 
+      // Re-sort blocks by id (number)
       updatedBlocks.sort((a, b) => {
         const aIdNum = getIdNumber(a.id);
         const bIdNum = getIdNumber(b.id);
-        return aIdNum - bIdNum;
+        return aIdNum < bIdNum ? -1 : 1;
       });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.

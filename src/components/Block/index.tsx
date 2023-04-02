@@ -36,6 +36,23 @@ export const Block = (props: Props) => {
   const [bgColor, setBgColor] = useState(color);
   const [zIndex, setZIndex] = useState(z);
 
+  // Set again z-index when reload etc.
+  useEffect(() => {
+    setZIndex(z);
+  }, [z]);
+
+  // Set hover
+  useEffect(() => {
+    // TODO: Play and stop sound
+    if (isDrag && current?.id === id) {
+      setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
+      setZIndex(topZ);
+    } else {
+      setBgColor(color);
+      // Hold current z-index
+    }
+  }, [color, current?.id, id, isDrag, topZ]);
+
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
       setCurrentElement(true, e.currentTarget);
@@ -51,17 +68,6 @@ export const Block = (props: Props) => {
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
   };
-
-  useEffect(() => {
-    // TODO: Play and stop sound
-    if (isDrag && current?.id === id) {
-      setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
-      setZIndex(topZ);
-    } else {
-      setBgColor(color);
-      // Hold current z-index
-    }
-  }, [color, current?.id, id, isDrag, topZ]);
 
   return (
     <div
