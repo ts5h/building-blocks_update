@@ -44,7 +44,8 @@ export const Block = (props: Props) => {
   // Set hover
   useEffect(() => {
     // TODO: Play and stop sound
-    if (isDrag && current?.id === id) {
+    const blockId = `block_${id}`;
+    if (isDrag && current?.id === blockId) {
       setBgColor(tinyColor(color).setAlpha(0.75).toRgbString());
       setZIndex(topZ);
     } else {
@@ -72,7 +73,7 @@ export const Block = (props: Props) => {
   return (
     <div
       role="button"
-      id={id}
+      id={`block_${id}`}
       className={`block ${Styles.block}`}
       tabIndex={-1}
       onMouseDown={handleMouseDown}

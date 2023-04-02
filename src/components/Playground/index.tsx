@@ -17,7 +17,7 @@ import Styles from "../../scss/components/Playground.module.scss";
 
 // Blocks data types in DB
 type Blocks = {
-  id: string;
+  id: number;
   x: number;
   y: number;
   z: number;
@@ -45,17 +45,9 @@ export const Playground = (props: Props) => {
 
   const windowLimit = 2000;
 
-  const getIdNumber = useCallback((id: string) => {
-    const [, idNumberString] = id.split("_");
-    return parseInt(idNumberString, 10);
+  const getMyColor = useCallback((id: number) => {
+    return colors[id % colors.length];
   }, []);
-
-  const getMyColor = useCallback(
-    (id: string) => {
-      return colors[getIdNumber(id) % colors.length];
-    },
-    [getIdNumber],
-  );
 
   // Get blocks coordination on load and updated
   useEffect(() => {
@@ -64,14 +56,13 @@ export const Playground = (props: Props) => {
       if (!loadedBlocks) return;
 
       const updateBlocks: BlocksType[] = loadedBlocks.map((block) => {
-        const idNum = getIdNumber(block.id);
         return {
           id: block.id,
           defaultX: block.x,
           defaultY: block.y,
           defaultZ: block.z,
-          width: blocksData[idNum].width,
-          height: blocksData[idNum].height,
+          width: blocksData[block.id].width,
+          height: blocksData[block.id].height,
         };
       });
 
@@ -80,7 +71,7 @@ export const Playground = (props: Props) => {
 
     return () => unsubscribe();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getIdNumber, topZ]);
+  }, [topZ]);
 
   // Set current element via parent function
   const setCurrentElement = useCallback(
@@ -99,7 +90,7 @@ export const Playground = (props: Props) => {
 
       let updatedBlocks: Blocks[] = [];
       for (let i = 0; i < blocks.length; i += 1) {
-        const el = document.getElementById(blocks[i].id);
+        const el = document.getElementById(`block_${blocks[i].id}`);
         let x: number;
         let y: number;
         const z =
@@ -124,33 +115,28 @@ export const Playground = (props: Props) => {
         updatedBlocks.push({ id: blocks[i].id, x, y, z });
       }
 
-      // Sort blocks by z-index
+      // Sort and re-numbering z-index
       updatedBlocks.sort((a, b) => {
         return a.z < b.z ? -1 : 1;
       });
 
-      // Re-numbering z-index
       updatedBlocks = updatedBlocks.map((block, index) => {
         return { ...block, z: index };
       });
 
-      // Re-sort blocks by id (number)
       updatedBlocks.sort((a, b) => {
-        const aIdNum = getIdNumber(a.id);
-        const bIdNum = getIdNumber(b.id);
-        return aIdNum < bIdNum ? -1 : 1;
+        return a.id < b.id ? -1 : 1;
       });
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
-
       // eslint-disable-next-line no-void
       void dbRef.update({
         blocks: updatedBlocks,
         updatedAt: firebase.firestore.Timestamp.now(),
       });
     },
-    [AppRef, blocks, current, dbRef, getIdNumber],
+    [AppRef, blocks, current, dbRef],
   );
 
   // Mouse up

@@ -1,5 +1,5 @@
 type BlocksType = {
-  id: string;
+  id: number;
   width: number;
   height: number;
   defaultX: number;
