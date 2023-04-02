@@ -4,7 +4,6 @@ import { isMobile } from "react-device-detect";
 import { dragContext } from "../../hooks/useDrag";
 import Styles from "../../scss/components/Block.module.scss";
 
-// Each block
 type Props = Pick<BlocksType, "id" | "width" | "height"> & {
   x: number;
   y: number;

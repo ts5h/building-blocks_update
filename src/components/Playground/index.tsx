@@ -29,7 +29,6 @@ type BlocksLog = {
   updatedAt: firebase.firestore.Timestamp;
 };
 
-// Playground
 type Props = {
   AppRef: RefObject<HTMLDivElement | null>;
 };
