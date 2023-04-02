@@ -6,7 +6,6 @@ import Styles from "../../scss/components/Block.module.scss";
 
 // Each block
 type Props = BlocksType & {
-  idNumber: number;
   color: string;
   current: HTMLDivElement | null;
   setCurrentElement: (arg0: boolean, arg1: HTMLDivElement | null) => void;
@@ -15,7 +14,6 @@ type Props = BlocksType & {
 export const Block = (props: Props) => {
   const {
     id,
-    idNumber,
     width,
     height,
     defaultX,
@@ -27,10 +25,7 @@ export const Block = (props: Props) => {
   } = props;
 
   const { isDrag } = useContext(dragContext);
-  const [directStyles, setDirectStyles] = useState({
-    zIndex: 0,
-    backgroundColor: color,
-  });
+  const [bgColor, setBgColor] = useState(color);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
@@ -50,30 +45,24 @@ export const Block = (props: Props) => {
 
   useEffect(() => {
     if (isDrag && current?.id === id) {
-      setDirectStyles({
-        zIndex: 200,
-        backgroundColor: tinyColor(color).lighten(10).toString(),
-      });
+      setBgColor(tinyColor(color).lighten(10).toString());
     } else {
-      setDirectStyles({
-        zIndex: defaultZ,
-        backgroundColor: color,
-      });
+      setBgColor(color);
     }
-  }, [color, current, defaultZ, id, idNumber, isDrag]);
+  }, [color, current?.id, id, isDrag]);
 
   return (
     <div
-      id={id}
       role="button"
+      id={id}
+      className={`block ${Styles.block}`}
       tabIndex={-1}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
-      className={`block ${Styles.block}`}
       style={{
-        zIndex: directStyles.zIndex,
-        backgroundColor: directStyles.backgroundColor,
+        zIndex: defaultZ,
+        backgroundColor: bgColor,
         width,
         height,
         left: defaultX,

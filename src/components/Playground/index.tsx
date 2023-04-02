@@ -223,7 +223,6 @@ export const Playground = (props: Props) => {
         <Block
           key={key}
           id={value.id}
-          idNumber={getIdNumber(value.id)}
           color={getMyColor(value.id)}
           width={value.width}
           height={value.height}
