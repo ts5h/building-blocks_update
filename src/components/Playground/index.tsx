@@ -12,6 +12,7 @@ import { colors } from "../../constants/colors";
 import { blocksData } from "../../data/blocksData";
 import { dragContext } from "../../store/global/Drag";
 import { useMousePosition } from "../../store/global/MousePosition";
+import { useSound } from "../../store/global/Sound";
 import { Block } from "../Block";
 import Styles from "../../scss/components/Playground.module.scss";
 
@@ -38,6 +39,7 @@ export const Playground = (props: Props) => {
   const dbRef = db.collection("blocks_2023").doc("position");
   const { isDrag, setIsDrag } = useContext(dragContext);
   const { position } = useMousePosition();
+  const { stopPlaying } = useSound();
 
   const [blocks, setBlocks] = useState(blocksData);
   const [current, setCurrent] = useState<HTMLDivElement | null>(null);
@@ -142,6 +144,7 @@ export const Playground = (props: Props) => {
   // Mouse up
   useEffect(() => {
     const onMouseUpHandler = (e: MouseEvent | TouchEvent) => {
+      stopPlaying();
       if (current) {
         // To reduce screen flickering, not change the whole blocks, except for elements related to pointer actions.
         setTopZ((prev) => prev + 1);
@@ -169,7 +172,7 @@ export const Playground = (props: Props) => {
         window.removeEventListener("mouseup", onMouseUpHandler);
       }
     };
-  }, [current, setIsDrag, updatePosition]);
+  }, [current, setIsDrag, stopPlaying, updatePosition]);
 
   // Mouse move
   useEffect(() => {

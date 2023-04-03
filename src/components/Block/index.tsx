@@ -36,7 +36,7 @@ export const Block = (props: Props) => {
   const [bgColor, setBgColor] = useState(color);
   const [zIndex, setZIndex] = useState(z);
 
-  const { playLoopSound, stopLoopSound } = useSound();
+  const { startPlaying } = useSound();
 
   // Set again z-index when reload etc.
   useEffect(() => {
@@ -53,17 +53,19 @@ export const Block = (props: Props) => {
       setBgColor(color);
       // Hold current z-index
     }
-  }, [color, current?.id, id, isDrag, topZ]);
+  }, [color, current?.id, id, isDrag, startPlaying, topZ]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!isMobile) {
       setCurrentElement(true, e.currentTarget);
+      startPlaying("Hulusi_A2.mp3");
     }
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (isMobile) {
       setCurrentElement(true, e.currentTarget);
+      startPlaying("Hulusi_A2.mp3");
     }
   };
 
