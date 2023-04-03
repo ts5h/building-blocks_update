@@ -2,54 +2,51 @@ import { useCallback, useRef, useState } from "react";
 
 export const useSound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<AudioContext | null>();
-  const sourceRef = useRef<AudioBufferSourceNode | null>();
+  const [audioContext, setAudioContext] = useState<AudioContext | null>();
+  const [source, setSource] = useState<AudioBufferSourceNode | null>();
 
   const filePath = "http://localhost:3000/sounds/";
 
-  const initAudio = useCallback( (fileName: string) => {
-    const context = new AudioContext();
-    const source = context.createBufferSource();
-    sourceRef.current = source;
-    audioRef.current = context;
+  const initAudio = useCallback((fileName: string) => {
+    const ctx = new AudioContext();
+    const src = ctx.createBufferSource();
 
     // eslint-disable-next-line no-void
     void fetch(`${filePath}${fileName}`)
       .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => context.decodeAudioData(arrayBuffer))
+      .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
       .then((audioBuffer) => {
-        source.buffer = audioBuffer;
-        source.loop = true;
-        source.connect(context.destination);
-        source.start(0);
+        src.buffer = audioBuffer;
+        src.loop = true;
+        src.connect(ctx.destination);
+        src.start(0);
+
+        setAudioContext(ctx);
+        setSource(src);
         setIsPlaying(true);
       });
   }, []);
 
-  const startPlaying = useCallback((fileName: string) => {
-    if (isPlaying) return;
-
-    if (!audioRef.current) {
-      audioRef.current = new AudioContext();
-    }
-    initAudio(fileName);
-  }, [initAudio, isPlaying]);
+  const startPlaying = useCallback(
+    (fileName: string) => {
+      if (isPlaying) return;
+      initAudio(fileName);
+    },
+    [initAudio, isPlaying],
+  );
 
   // TODO: Need to fix to stop playing properly
   const stopPlaying = useCallback(() => {
-    console.log(sourceRef.current);
-    if (sourceRef.current) {
-      sourceRef.current.stop();
-      sourceRef.current = null;
-    }
+    console.log(source);
+    source?.stop();
+    setSource(null);
 
-    if (audioRef.current) {
-      // eslint-disable-next-line no-void
-      void audioRef.current.close();
-      audioRef.current = null;
-    }
+    // eslint-disable-next-line no-void
+    void audioContext?.close();
+    setAudioContext(null);
+
     setIsPlaying(false);
-  }, []);
+  }, [audioContext, source]);
 
   return {
     startPlaying,
