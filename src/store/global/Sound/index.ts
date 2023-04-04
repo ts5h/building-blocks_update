@@ -29,6 +29,9 @@ export const useSound = () => {
         src.loop = true;
         src.connect(ctx.destination);
         src.start(0);
+      })
+      .catch((error) => {
+        console.error(`Failed to load file: ${filePath}${fileName}`, error);
       });
 
     setAudioContext(ctx);
