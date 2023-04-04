@@ -45,7 +45,7 @@ export const Block = (props: Props) => {
     setZIndex(z);
   }, [z]);
 
-  // Set hover
+  // Set hover state when the block is being dragged
   useEffect(() => {
     const blockId = `block_${id}`;
     if (isDrag && current?.id === blockId) {
@@ -53,7 +53,7 @@ export const Block = (props: Props) => {
       setZIndex(topZ);
     } else {
       setBgColor(color);
-      // Hold current z-index
+      // Keep the current z-index when not dragging or after dragging
     }
   }, [color, current?.id, id, isDrag, startPlaying, topZ]);
 
