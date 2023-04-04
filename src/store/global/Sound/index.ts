@@ -8,6 +8,13 @@ export const useSound = () => {
   const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds/";
 
   const initAudio = useCallback(async (fileName: string) => {
+    // Check if the extension is mp3
+    const extension = fileName.split(".").pop() || "";
+    if (extension !== "mp3") {
+      console.error(`File extension ${extension} is not supported`);
+      return;
+    }
+
     setAudioContext(null);
     setSource(null);
 
