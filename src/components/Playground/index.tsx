@@ -130,8 +130,9 @@ export const Playground = (props: Props) => {
 
       // Prevent slipping a few px of the block while dragging when on mouseup.
       // Ignore the return value without using async/await because the process is rather heavy.
-      // eslint-disable-next-line no-void
-      void dbRef.update({
+
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      dbRef.update({
         blocks: updatedBlocks,
         updatedAt: firebase.firestore.Timestamp.now(),
       });

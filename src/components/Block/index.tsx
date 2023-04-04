@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { isMobile } from "react-device-detect";
 import tinyColor from "tinycolor2";
+import { sounds } from "../../constants/sounds";
 import { dragContext } from "../../store/global/Drag";
 import { useSound } from "../../store/global/Sound";
 import Styles from "../../scss/components/Block.module.scss";
@@ -36,7 +37,8 @@ export const Block = (props: Props) => {
   const [bgColor, setBgColor] = useState(color);
   const [zIndex, setZIndex] = useState(z);
 
-  const { playLoopSound, stopLoopSound } = useSound();
+  const { startPlaying, stopPlaying } = useSound();
+  const soundFile = sounds[id % sounds.length];
 
   // Set again z-index when reload etc.
   useEffect(() => {
@@ -53,22 +55,34 @@ export const Block = (props: Props) => {
       setBgColor(color);
       // Hold current z-index
     }
-  }, [color, current?.id, id, isDrag, topZ]);
+  }, [color, current?.id, id, isDrag, startPlaying, topZ]);
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
-    if (!isMobile) {
-      setCurrentElement(true, e.currentTarget);
-    }
+    if (isMobile) return;
+
+    setCurrentElement(true, e.currentTarget);
+    startPlaying(soundFile);
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (isMobile) {
-      setCurrentElement(true, e.currentTarget);
-    }
+    if (!isMobile) return;
+
+    setCurrentElement(true, e.currentTarget);
+    startPlaying(soundFile);
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+  };
+
+  const handleMouseUp = () => {
+    if (isMobile) return;
+    stopPlaying();
+  };
+
+  const handleTouchEnd = () => {
+    if (!isMobile) return;
+    stopPlaying();
   };
 
   return (
@@ -80,6 +94,8 @@ export const Block = (props: Props) => {
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
       onDragStart={handleDragStart}
+      onMouseUp={handleMouseUp}
+      onTouchEnd={handleTouchEnd}
       style={{
         width,
         height,
