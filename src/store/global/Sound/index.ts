@@ -5,7 +5,7 @@ export const useSound = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>();
   const [source, setSource] = useState<AudioBufferSourceNode | null>();
 
-  const filePath = "http://localhost:3000/sounds/";
+  const filePath = "/sounds/";
 
   const initAudio = useCallback((fileName: string) => {
     const ctx = new AudioContext();
