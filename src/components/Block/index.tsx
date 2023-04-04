@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { isMobile } from "react-device-detect";
 import tinyColor from "tinycolor2";
 import { sounds } from "../../constants/sounds";
@@ -33,12 +33,33 @@ export const Block = (props: Props) => {
     setCurrentElement,
   } = props;
 
+  const blockRef = useRef<HTMLDivElement>(null);
+
   const { isDrag } = useContext(dragContext);
   const [bgColor, setBgColor] = useState(color);
   const [zIndex, setZIndex] = useState(z);
 
   const { startPlaying, stopPlaying } = useSound();
   const soundFile = sounds[id % sounds.length];
+
+  // Stop playing when mouseup outside the block
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (blockRef.current && !blockRef.current.contains(e.target as Node)) {
+        stopPlaying();
+      }
+    };
+
+    if (!isMobile) {
+      document.addEventListener("mouseup", handleClickOutside);
+    }
+
+    return () => {
+      if (!isMobile) {
+        document.removeEventListener("mouseup", handleClickOutside);
+      }
+    };
+  }, [stopPlaying]);
 
   // Set again z-index when reload etc.
   useEffect(() => {
@@ -87,6 +108,7 @@ export const Block = (props: Props) => {
 
   return (
     <div
+      ref={blockRef}
       role="button"
       id={`block_${id}`}
       className={`block ${Styles.block}`}
