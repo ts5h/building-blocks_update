@@ -1,6 +1,6 @@
 # Building Blocks Update - 2023
-A work that some objects can be dragged and dropped.   
-Customized from `ts5h/building-blocks` in 2023.
+A work that objects shown in the screen can be dragged.   
+Customized from `ts5h/building-blocks` and collaborated with [James Cleeland](https://independent.academia.edu/JamesCleeland) in 2023.
 
 https://0bjekt.co/2023/bulding-blocks_2
 
@@ -27,6 +27,9 @@ const auth = firebaseApp.auth()
 export { auth }
 export default db
 ```
+
+## Sounds
+Should be created `/public/sounds` and added into sound files.
 
 # Getting Started with Create React App
 
