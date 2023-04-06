@@ -2,8 +2,6 @@
 A work that objects shown in the screen can be dragged.   
 Customized from `ts5h/building-blocks` and collaborated with [James Cleeland](https://independent.academia.edu/JamesCleeland) in 2023.
 
-https://0bjekt.co/2023/bulding-blocks_2
-
 ## Firebase Config
 Should be added following as ```./src/configs/FirebaseConfig.ts```
 
