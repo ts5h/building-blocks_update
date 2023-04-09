@@ -26,9 +26,6 @@ export { auth }
 export default db
 ```
 
-## Sounds
-Should be created `/public/sounds` and added into sound files.
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
