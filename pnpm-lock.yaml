@@ -21,6 +21,7 @@ specifiers:
   eslint-plugin-react-hooks: ^4.6.0
   firebase: ^9.18.0
   husky: ^8.0.3
+  identity-obj-proxy: ^3.0.0
   lint-staged: ^13.2.0
   react: ^18.2.0
   react-device-detect: ^2.2.3
@@ -62,6 +63,7 @@ devDependencies:
   eslint-plugin-react: 7.32.2_eslint@8.36.0
   eslint-plugin-react-hooks: 4.6.0_eslint@8.36.0
   husky: 8.0.3
+  identity-obj-proxy: 3.0.0
   lint-staged: 13.2.0
   rome: 11.0.0
   sass: 1.60.0
@@ -5950,7 +5952,6 @@ packages:
 
   /harmony-reflect/1.6.2:
     resolution: {integrity: sha512-HIp/n38R9kQjDEziXyDTuW3vvoxxyxjxFzXLrBr18uB47GnSt+G9D29fqrpM5ZkspMcPICud3XsBJQ4Y2URg8g==}
-    dev: false
 
   /has-bigints/1.0.2:
     resolution: {integrity: sha512-tSvCKtBr9lkF0Ex0aQiP9N+OpV4zi2r/Nee5VkRDbaqv35RLYMzbwQfFSZZH0kR+Rd6302UJZ2p/bJCEoR3VoQ==}
@@ -6191,7 +6192,6 @@ packages:
     engines: {node: '>=4'}
     dependencies:
       harmony-reflect: 1.6.2
-    dev: false
 
   /ignore/5.2.4:
     resolution: {integrity: sha512-MAb38BcSbH0eHNBxn7ql2NH/kX33OkB3lZ1BNdh7ENeRChHTYsTvWrMubiIAMNS2llXEEgZ1MUOBtXChP3kaFQ==}
