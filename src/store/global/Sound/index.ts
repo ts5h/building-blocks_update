@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
+import * as process from "process";
 
 export const useSound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [source, setSource] = useState<AudioBufferSourceNode | null>(null);
 
-  // const filePath = "/sounds";
-  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  const filePath = "/sounds";
 
   const initAudio = useCallback(async (fileName: string) => {
     // Check if the extension is mp3
