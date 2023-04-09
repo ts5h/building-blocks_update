@@ -1,5 +1,4 @@
 import { useCallback, useState } from "react";
-import * as process from "process";
 
 export const useSound = () => {
   const [isPlaying, setIsPlaying] = useState(false);
