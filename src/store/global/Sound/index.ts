@@ -11,51 +11,54 @@ export const useSound = () => {
   // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
   const filePath = "/sounds";
 
-  const initAudio = useCallback(async (fileName: string) => {
-    // Check the file condition
-    if (fileName === "") {
-      console.error("File name is empty");
-      return;
-    }
+  const initAudio = useCallback(
+    async (fileName: string) => {
+      // Check the file condition
+      if (fileName === "") {
+        console.error("File name is empty");
+        return;
+      }
 
-    const extension = fileName.split(".").pop() || "";
-    if (extension !== "mp3") {
-      console.error(`File extension ${extension} is not supported`);
-      return;
-    }
+      const extension = fileName.split(".").pop() || "";
+      if (extension !== "mp3") {
+        console.error(`File extension ${extension} is not supported`);
+        return;
+      }
 
-    if (source) {
-      source.stop();
-      source.disconnect();
-      setSource(null);
-    }
+      if (source) {
+        source.stop();
+        source.disconnect();
+        setSource(null);
+      }
 
-    if (audioContext) {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      audioContext.close();
-      setAudioContext(null);
-    }
+      if (audioContext) {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        audioContext.close();
+        setAudioContext(null);
+      }
 
-    const ctx = new AudioContext();
-    const src = ctx.createBufferSource();
+      const ctx = new AudioContext();
+      const src = ctx.createBufferSource();
 
-    await fetch(`${filePath}/${fileName}`)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        src.buffer = audioBuffer;
-        src.loop = true;
-        src.connect(ctx.destination);
-        src.start(0);
+      await fetch(`${filePath}/${fileName}`)
+        .then((response) => response.arrayBuffer())
+        .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
+        .then((audioBuffer) => {
+          src.buffer = audioBuffer;
+          src.loop = true;
+          src.connect(ctx.destination);
+          src.start(0);
 
-        setAudioContext(ctx);
-        setSource(src);
-        setIsLoaded(true);
-      })
-      .catch((error) => {
-        console.error(`Failed to load file: ${filePath}${fileName}`, error);
-      });
-  }, [audioContext, source]);
+          setAudioContext(ctx);
+          setSource(src);
+          setIsLoaded(true);
+        })
+        .catch((error) => {
+          console.error(`Failed to load file: ${filePath}${fileName}`, error);
+        });
+    },
+    [audioContext, source],
+  );
 
   const startPlaying = useCallback(
     (soundFile: Sound) => {
