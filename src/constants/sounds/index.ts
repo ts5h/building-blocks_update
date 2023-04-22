@@ -1,12 +1,112 @@
-export const sounds = [
-  "1_Kurdish_Female_words.mp3",
-  "2_Arabic_spoken_words.mp3",
-  "5_Khmer_vocals_M_Part.mp3",
-  "8_Kurdish_Fiddle_loop_1.mp3",
-  "9_Tibetan_male_vox_2.mp3",
-  "18.mp3",
-  "30_male_throat_vox_1.mp3",
-  "64_Chinese_Bamboo_Flute_1.mp3",
-  "Guitar.mp3",
-  "Voice_042_sd.mp3",
+export const sounds: Sounds[] = [
+  {
+    id: 1,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 2,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 3,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 4,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 5,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 6,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 7,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 8,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 9,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 10,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 11,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 12,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 13,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 14,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 15,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 16,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 17,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 18,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 19,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 20,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 21,
+    fileName: "",
+    loop: true,
+  },
+  {
+    id: 22,
+    fileName: "",
+    loop: true,
+  },
 ];
