@@ -1,4 +1,4 @@
-type BlocksType = {
+type Block = {
   id: number;
   width: number;
   height: number;

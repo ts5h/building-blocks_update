@@ -1,4 +1,4 @@
-export const blocksData: BlocksType[] = [
+export const blocksData: Block[] = [
   {
     id: 0,
     width: 25,

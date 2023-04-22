@@ -55,7 +55,7 @@ export const Playground = (props: Props) => {
       const loadedBlocks = (snapshot.data() as BlocksLog).blocks;
       if (!loadedBlocks) return;
 
-      const updateBlocks: BlocksType[] = loadedBlocks.map((block) => {
+      const updateBlocks: Block[] = loadedBlocks.map((block) => {
         return {
           id: block.id,
           defaultX: block.x,

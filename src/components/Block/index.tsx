@@ -6,7 +6,7 @@ import { dragContext } from "../../store/global/Drag";
 import { useSound } from "../../store/global/Sound";
 import Styles from "../../scss/components/Block.module.scss";
 
-type Props = Pick<BlocksType, "id" | "width" | "height"> & {
+type Props = Pick<Block, "id" | "width" | "height"> & {
   x: number;
   y: number;
   z: number;
@@ -40,7 +40,8 @@ export const Block = (props: Props) => {
   const [zIndex, setZIndex] = useState(z);
 
   const { startPlaying, stopPlaying } = useSound();
-  const soundFile = sounds[id % sounds.length];
+  const soundFileName = sounds[id % sounds.length].fileName;
+  const soundIsLoop = sounds[id % sounds.length].loop;
 
   // Stop playing when mouseup outside the block
   useEffect(() => {
@@ -82,14 +83,14 @@ export const Block = (props: Props) => {
     if (isMobile) return;
 
     setCurrentElement(true, e.currentTarget);
-    startPlaying(soundFile);
+    startPlaying(soundFileName);
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!isMobile) return;
 
     setCurrentElement(true, e.currentTarget);
-    startPlaying(soundFile);
+    startPlaying(soundFileName);
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {
