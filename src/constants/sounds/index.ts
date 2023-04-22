@@ -12,7 +12,7 @@ export const sounds: Sound[] = [
   {
     id: 2,
     fileName: "3_kurdish_female_words.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 3,
@@ -22,7 +22,7 @@ export const sounds: Sound[] = [
   {
     id: 4,
     fileName: "5_arabic_spoken_words.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 5,
@@ -32,22 +32,22 @@ export const sounds: Sound[] = [
   {
     id: 6,
     fileName: "7_1_khmer_vocals_f_slow.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 7,
     fileName: "7_2_khmer_vocals_f_slow.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 8,
     fileName: "7_3_khmer_vocals_f_slow.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 9,
     fileName: "8_khmer_vocals_m_part.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 10,
@@ -62,7 +62,7 @@ export const sounds: Sound[] = [
   {
     id: 12,
     fileName: "11_tibetan_male_vox_2.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 13,
