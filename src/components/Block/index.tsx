@@ -40,8 +40,7 @@ export const Block = (props: Props) => {
   const [zIndex, setZIndex] = useState(z);
 
   const { startPlaying, stopPlaying } = useSound();
-  const soundFileName = sounds[id % sounds.length].fileName;
-  const soundIsLoop = sounds[id % sounds.length].loop;
+  const soundFile = sounds[id % sounds.length];
 
   // Stop playing when mouseup outside the block
   useEffect(() => {
@@ -83,14 +82,14 @@ export const Block = (props: Props) => {
     if (isMobile) return;
 
     setCurrentElement(true, e.currentTarget);
-    startPlaying(soundFileName);
+    startPlaying(soundFile);
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!isMobile) return;
 
     setCurrentElement(true, e.currentTarget);
-    startPlaying(soundFileName);
+    startPlaying(soundFile);
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>) => {

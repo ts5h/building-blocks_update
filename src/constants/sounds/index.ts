@@ -2,7 +2,7 @@ export const sounds: Sound[] = [
   {
     id: 0,
     fileName: "1_djeli_ngoni_solo.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 1,
@@ -17,7 +17,7 @@ export const sounds: Sound[] = [
   {
     id: 3,
     fileName: "4_chapei_uptempo.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 4,
@@ -27,7 +27,7 @@ export const sounds: Sound[] = [
   {
     id: 5,
     fileName: "6_chapei_slow.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ export const sounds: Sound[] = [
   {
     id: 10,
     fileName: "9_flute_up.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 11,
@@ -107,12 +107,12 @@ export const sounds: Sound[] = [
   {
     id: 21,
     fileName: "13_korng_slow.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 22,
     fileName: "14_djembe_2.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 23,
@@ -122,7 +122,7 @@ export const sounds: Sound[] = [
   {
     id: 24,
     fileName: "16_baara_key_c_sharp_minor.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 25,
@@ -142,22 +142,22 @@ export const sounds: Sound[] = [
   {
     id: 28,
     fileName: "18_1_chinese_er_hu.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 29,
     fileName: "18_2_chinese_er_hu.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 30,
     fileName: "18_3_chinese_er_hu.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 31,
     fileName: "18_4_chinese_er_hu.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 32,
@@ -167,37 +167,37 @@ export const sounds: Sound[] = [
   {
     id: 33,
     fileName: "20_chinese_female_loop_2.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 34,
     fileName: "21_1_african_male_chanting.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 35,
     fileName: "21_2_african_male_chanting.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 36,
     fileName: "21_3_african_male_chanting.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 37,
     fileName: "21_4_african_male_chanting.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 38,
     fileName: "21_5_african_male_chanting.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 39,
     fileName: "22_african_male_voice_1.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 40,
@@ -237,31 +237,31 @@ export const sounds: Sound[] = [
   {
     id: 47,
     fileName: "24_voice_042_sd.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 48,
     fileName: "25_1_asian_flute.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 49,
     fileName: "25_2_asian_flute_1.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 50,
     fileName: "25_3_asian_flute_1.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 51,
     fileName: "25_4_asian_flute_1.mp3",
-    loop: true,
+    loop: false,
   },
   {
     id: 52,
     fileName: "25_5_asian_flute_1.mp3",
-    loop: true,
+    loop: false,
   },
 ];

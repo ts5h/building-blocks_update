@@ -8,7 +8,9 @@ export const useSound = () => {
   // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
   const filePath = "/sounds";
 
-  const initAudio = useCallback(async (fileName: string) => {
+  const initAudio = useCallback(async (sound: Sound) => {
+    const { fileName } = sound;
+
     // Check the file condition
     if (fileName === "") {
       console.error("File name is empty");
@@ -46,10 +48,10 @@ export const useSound = () => {
   }, []);
 
   const startPlaying = useCallback(
-    (fileName: string) => {
+    (sound: Sound) => {
       if (isPlaying) return;
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      initAudio(fileName);
+      initAudio(sound);
     },
     [initAudio, isPlaying],
   );
