@@ -4,6 +4,8 @@ import { dragContext, useDrag } from "./store/global/Drag";
 import { Playground } from "./components/Playground";
 import "./scss/App.scss";
 
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+
 const App = () => {
   const ctx = useDrag();
   const AppRef = useRef(null);
