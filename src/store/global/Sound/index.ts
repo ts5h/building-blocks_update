@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export const useSound = () => {
   const [isLoop, setIsLoop] = useState(false);
@@ -8,29 +8,37 @@ export const useSound = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [source, setSource] = useState<AudioBufferSourceNode | null>(null);
 
-  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
-  // const filePath = "/sounds";
+  const timer = useRef<number | null>(null);
+
+  // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  const filePath = "/sounds";
 
   // NOTE: Suspend audio correctly when isPlaying is false
-  useEffect(() => {
-    if (!isLoaded || isPlaying) return;
+  const checkAndCStopAudio = useCallback(() => {
+    console.log("called");
+    if (!isLoaded || isPlaying || audioContext?.state !== "running") {
+      if (timer.current) window.clearTimeout(timer.current);
+      return;
+    }
 
-    setTimeout(() => {
-      if (audioContext?.state !== "running") return;
+    if (isLoop) {
+      source?.stop();
+      source?.disconnect();
+      setSource(null);
 
-      if (isLoop) {
-        source?.stop();
-        source?.disconnect();
-        setSource(null);
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      audioContext?.close();
+      setAudioContext(null);
+    } else {
+      audioContext?.suspend().catch((error) => console.error(error));
+    }
 
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        audioContext?.close();
-        setAudioContext(null);
-      } else {
-        audioContext?.suspend().catch((error) => console.error(error));
-      }
-    }, 200);
+    timer.current = window.setTimeout(() => checkAndCStopAudio(), 100);
   }, [audioContext, isLoaded, isLoop, isPlaying, source]);
+
+  useEffect(() => {
+    checkAndCStopAudio();
+  }, [checkAndCStopAudio]);
 
   const initAudio = useCallback(async (fileName: string) => {
     // Check the file condition
