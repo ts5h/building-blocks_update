@@ -79,12 +79,22 @@ export const useSound = () => {
 
   // NOTE: Suspend audio correctly when isPlaying is false
   useEffect(() => {
+    if (!isLoaded || isPlaying) return;
+
     setTimeout(() => {
-      if (isLoaded && !isPlaying && !isLoop) {
+      if (isLoop) {
+        source?.stop();
+        source?.disconnect();
+        setSource(null);
+
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        audioContext?.close();
+        setAudioContext(null);
+      } else {
         audioContext?.suspend().catch((error) => console.error(error));
       }
     }, 100);
-  }, [audioContext, isLoaded, isLoop, isPlaying]);
+  }, [audioContext, isLoaded, isLoop, isPlaying, source]);
 
   const stopPlaying = useCallback(() => {
     if (isLoop) {
