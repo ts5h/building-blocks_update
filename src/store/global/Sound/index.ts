@@ -17,6 +17,7 @@ export const useSound = () => {
 
     setTimeout(() => {
       if (audioContext?.state !== "running") return;
+
       if (isLoop) {
         source?.stop();
         source?.disconnect();
