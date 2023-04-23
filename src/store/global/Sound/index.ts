@@ -78,11 +78,13 @@ export const useSound = () => {
     [audioContext, initAudio, isLoaded],
   );
 
-  // NOTE: Suspend audio context correctly when isPlaying is false
+  // NOTE: Suspend audio correctly when isPlaying is false
   useEffect(() => {
-    if (!isPlaying && !isLoop) {
-      audioContext?.suspend().catch((error) => console.error(error));
-    }
+    setTimeout(() => {
+      if (!isPlaying && !isLoop) {
+        audioContext?.suspend().catch((error) => console.error(error));
+      }
+    }, 1000);
   }, [audioContext, isLoop, isPlaying]);
 
   const stopPlaying = useCallback(() => {
@@ -94,6 +96,8 @@ export const useSound = () => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       audioContext?.close();
       setAudioContext(null);
+    } else {
+      audioContext?.suspend().catch((error) => console.error(error));
     }
 
     setIsPlaying(false);
