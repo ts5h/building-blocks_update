@@ -8,7 +8,8 @@ export const useSound = () => {
   const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [source, setSource] = useState<AudioBufferSourceNode | null>(null);
 
-  const filePath = "../sounds";
+  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  // const filePath = "/sounds";
 
   const initAudio = useCallback(
     async (fileName: string) => {
