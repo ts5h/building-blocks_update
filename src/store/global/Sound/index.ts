@@ -81,11 +81,11 @@ export const useSound = () => {
   // NOTE: Suspend audio correctly when isPlaying is false
   useEffect(() => {
     setTimeout(() => {
-      if (!isPlaying && !isLoop) {
+      if (isLoaded && !isPlaying && !isLoop) {
         audioContext?.suspend().catch((error) => console.error(error));
       }
-    }, 1000);
-  }, [audioContext, isLoop, isPlaying]);
+    }, 100);
+  }, [audioContext, isLoaded, isLoop, isPlaying]);
 
   const stopPlaying = useCallback(() => {
     if (isLoop) {
