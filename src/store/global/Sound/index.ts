@@ -11,54 +11,59 @@ export const useSound = () => {
   const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
   // const filePath = "/sounds";
 
-  const initAudio = useCallback(
-    async (fileName: string) => {
-      // Check the file condition
-      if (fileName === "") {
-        console.error("File name is empty");
-        return;
-      }
+  // NOTE: Suspend audio correctly when isPlaying is false
+  useEffect(() => {
+    if (!isLoaded || isPlaying) return;
 
-      const extension = fileName.split(".").pop() || "";
-      if (extension !== "mp3") {
-        console.error(`File extension ${extension} is not supported`);
-        return;
-      }
-
-      if (source) {
-        source.stop();
-        source.disconnect();
+    setTimeout(() => {
+      if (audioContext?.state !== "running") return;
+      if (isLoop) {
+        source?.stop();
+        source?.disconnect();
         setSource(null);
-      }
 
-      if (audioContext) {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        audioContext.close();
+        audioContext?.close();
         setAudioContext(null);
+      } else {
+        audioContext?.suspend().catch((error) => console.error(error));
       }
+    }, 200);
+  }, [audioContext, isLoaded, isLoop, isPlaying, source]);
 
-      const ctx = new AudioContext();
-      const src = ctx.createBufferSource();
+  const initAudio = useCallback(async (fileName: string) => {
+    // Check the file condition
+    if (fileName === "") {
+      console.error("File name is empty");
+      return;
+    }
 
-      await fetch(`${filePath}/${fileName}`)
-        .then((response) => response.arrayBuffer())
-        .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
-        .then((audioBuffer) => {
-          src.buffer = audioBuffer;
-          src.loop = true;
-          src.connect(ctx.destination);
-          src.start(0);
+    const extension = fileName.split(".").pop() || "";
+    if (extension !== "mp3") {
+      console.error(`File extension ${extension} is not supported`);
+      return;
+    }
 
-          setAudioContext(ctx);
-          setSource(src);
-          setIsLoaded(true);
-        })
-        .catch((error) => {
-          console.error(`Failed to load file: ${filePath}${fileName}`, error);
-        });
-    },
-    [audioContext, source],
-  );
+    const ctx = new AudioContext();
+    const src = ctx.createBufferSource();
+
+    await fetch(`${filePath}/${fileName}`)
+      .then((response) => response.arrayBuffer())
+      .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
+      .then((audioBuffer) => {
+        src.buffer = audioBuffer;
+        src.loop = true;
+        src.connect(ctx.destination);
+        src.start(0);
+
+        setAudioContext(ctx);
+        setSource(src);
+        setIsLoaded(true);
+      })
+      .catch((error) => {
+        console.error(`Failed to load file: ${filePath}${fileName}`, error);
+      });
+  }, []);
 
   const startPlaying = useCallback(
     (soundFile: Sound) => {
@@ -77,25 +82,6 @@ export const useSound = () => {
     },
     [audioContext, initAudio, isLoaded],
   );
-
-  // NOTE: Suspend audio correctly when isPlaying is false
-  useEffect(() => {
-    if (!isLoaded || isPlaying) return;
-
-    setTimeout(() => {
-      if (isLoop) {
-        source?.stop();
-        source?.disconnect();
-        setSource(null);
-
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        audioContext?.close();
-        setAudioContext(null);
-      } else {
-        audioContext?.suspend().catch((error) => console.error(error));
-      }
-    }, 100);
-  }, [audioContext, isLoaded, isLoop, isPlaying, source]);
 
   const stopPlaying = useCallback(() => {
     if (isLoop) {
