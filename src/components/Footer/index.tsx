@@ -1,24 +1,16 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useState } from "react";
 import { MdOutlineHelpOutline, MdOutlineClose } from "react-icons/md";
 import Styles from "../../scss/components/Footer.module.scss";
 
 export const Footer: FC = () => {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
 
-  const navRef = useRef<HTMLDivElement>(null);
-  const helpRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    // const nav = navRef.current;
-    // const help = helpRef.current;
-  }, [isHelpOpen]);
-
   const handleClick = () => setIsHelpOpen(!isHelpOpen);
 
   return (
     <footer className={Styles.footer}>
       <p>&copy; 2023 0bjekt/ts5h, James Cleeland</p>
-      <nav className={Styles.nav} ref={navRef}>
+      <nav className={Styles.nav}>
         <button
           type="button"
           className={isHelpOpen ? Styles.on : ""}
@@ -27,7 +19,7 @@ export const Footer: FC = () => {
           <p>Help</p>
           <MdOutlineHelpOutline />
         </button>
-        <div className={Styles.help} ref={helpRef}>
+        <div className={`${Styles.help} ${isHelpOpen ? Styles.show : ""}`}>
           <button
             className={Styles.close}
             type="button"

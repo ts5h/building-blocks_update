@@ -59,9 +59,10 @@ button {
 
     .help {
       position: absolute;
+      display: none;
       width: 280px;
       left: -125px;
-      bottom: 34px;
+      bottom: 32px;
 
       border: 1px solid #ccc;
       border-radius: 5px;
@@ -71,23 +72,27 @@ button {
       &:before {
         content: "";
         position: absolute;
-        bottom: -16px;
+        bottom: -12px;
         left: 50%;
-        margin-left: -8px;
-        border: 8px solid transparent;
-        border-top: 8px solid white;
+        margin-left: -6px;
+        border: 6px solid transparent;
+        border-top: 6px solid white;
         z-index: 2;
       }
 
       &:after {
         content: "";
         position: absolute;
-        bottom: -20px;
+        bottom: -16px;
         left: 50%;
-        margin-left: -10px;
-        border: 10px solid transparent;
-        border-top: 10px solid #ccc;
+        margin-left: -8px;
+        border: 8px solid transparent;
+        border-top: 8px solid #ccc;
         z-index: 1;
+      }
+
+      &.show {
+        display: block;
       }
 
       .close {
