@@ -20,16 +20,15 @@ export const Footer: FC = () => {
           <MdOutlineHelpOutline />
         </button>
         <div className={`${Styles.help} ${isHelpOpen ? Styles.show : ""}`}>
-          <button
-            className={Styles.close}
-            type="button"
-            onClick={handleClick}
-          >
+          <button type="button" className={Styles.close} onClick={handleClick}>
             <p>Close</p>
             <MdOutlineClose />
           </button>
           <ul>
-            <li>Each shape displayed on the page can be moved by dragging and dropping.</li>
+            <li>
+              Each shape displayed on the page can be moved by dragging and
+              dropping.
+            </li>
             <li>Each shape plays a sound when dragging.</li>
           </ul>
         </div>
