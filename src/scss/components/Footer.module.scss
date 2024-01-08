@@ -1,3 +1,14 @@
+// Reset button styles
+button {
+  padding: 0;
+  border: none;
+  outline: none;
+  font: inherit;
+  color: inherit;
+  background: none;
+  line-height: 1;
+}
+
 .footer {
   position: absolute;
   display: flex;
@@ -8,27 +19,41 @@
   bottom: 0;
   width: 100%;
 
-  padding: 0 8px 8px 12px;
+  padding: 0 2px 2px 12px;
 
   p {
     color: #444;
     font-size: 11px;
   }
 
-  nav {
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.5);
-    margin-left: 12px;
+  .nav {
+    width: 30px;
+    height: 30px;
+    margin-left: 6px;
 
-    svg {
-      width: 100%;
-      height: 100%;
-      fill: #666;
+    button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+
+      p {
+        text-indent: -9999px;
+      }
+
+      &.on {
+        svg {
+          fill: #444;
+        }
+      }
+
+      svg {
+        width: 18px;
+        height: 18px;
+        fill: #888;
+      }
     }
   }
-}
-
-.button {
-  cursor: pointer;
 }
