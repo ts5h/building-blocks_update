@@ -13,8 +13,8 @@ export const useSound = () => {
 
   const timer = useRef<number | null>(null);
 
-  // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
-  const filePath = "/sounds";
+  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  // const filePath = "/sounds";
 
   // NOTE: Suspend audio correctly when isPlaying is false
   const checkAndCStopAudio = useCallback(() => {
