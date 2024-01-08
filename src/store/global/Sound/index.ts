@@ -1,6 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useFirstTouch } from "../../../hooks/useFirstTouch";
 
 export const useSound = () => {
+  const { handleFirstTouch } = useFirstTouch();
+
   const [isLoop, setIsLoop] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -10,8 +13,8 @@ export const useSound = () => {
 
   const timer = useRef<number | null>(null);
 
-  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
-  // const filePath = "/sounds";
+  // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  const filePath = "/sounds";
 
   // NOTE: Suspend audio correctly when isPlaying is false
   const checkAndCStopAudio = useCallback(() => {
@@ -75,6 +78,9 @@ export const useSound = () => {
 
   const startPlaying = useCallback(
     (soundFile: Sound) => {
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      (async () => handleFirstTouch())();
+
       // console.log(soundFile);
       const { fileName, loop } = soundFile;
       setIsLoop(loop);
@@ -88,7 +94,7 @@ export const useSound = () => {
 
       setIsPlaying(true);
     },
-    [audioContext, initAudio, isLoaded],
+    [audioContext, handleFirstTouch, initAudio, isLoaded],
   );
 
   const stopPlaying = useCallback(() => {
