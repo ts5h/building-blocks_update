@@ -5,6 +5,7 @@ import { sounds } from "../../constants/sounds";
 import { dragContext } from "../../store/global/Drag";
 import { useSound } from "../../store/global/Sound";
 import Styles from "../../scss/components/Block.module.scss";
+import { useFirstTouch } from "../../hooks/useFirstTouch";
 
 type Props = Pick<Block, "id" | "width" | "height"> & {
   x: number;
@@ -32,6 +33,7 @@ export const Block = (props: Props) => {
     current,
     setCurrentElement,
   } = props;
+  const { handleFirstTouch } = useFirstTouch();
 
   const blockRef = useRef<HTMLDivElement>(null);
 
@@ -87,6 +89,9 @@ export const Block = (props: Props) => {
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     if (!isMobile) return;
+
+    // eslint-disable-next-line @typescript-eslint/no-floating-promises
+    (async () => handleFirstTouch())();
 
     setCurrentElement(true, e.currentTarget);
     startPlaying(soundFile);

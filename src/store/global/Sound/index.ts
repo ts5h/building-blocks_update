@@ -1,9 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useFirstTouch } from "../../../hooks/useFirstTouch";
 
 export const useSound = () => {
-  const { handleFirstTouch } = useFirstTouch();
-
   const [isLoop, setIsLoop] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -78,9 +75,6 @@ export const useSound = () => {
 
   const startPlaying = useCallback(
     (soundFile: Sound) => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      (async () => handleFirstTouch())();
-
       // console.log(soundFile);
       const { fileName, loop } = soundFile;
       setIsLoop(loop);
@@ -94,7 +88,7 @@ export const useSound = () => {
 
       setIsPlaying(true);
     },
-    [audioContext, handleFirstTouch, initAudio, isLoaded],
+    [audioContext, initAudio, isLoaded],
   );
 
   const stopPlaying = useCallback(() => {
