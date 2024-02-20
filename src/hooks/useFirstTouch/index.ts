@@ -16,7 +16,7 @@ export const useFirstTouch = () => {
 
     source.connect(audioContext.destination);
     source.start(0);
-    source.stop(0.001);
+    source.stop(0.01);
 
     if (isChrome) {
       await new AudioContext().resume().catch((error) => console.log(error));
