@@ -79,7 +79,7 @@ export const Playground = (props: Props) => {
       setIsDrag(state);
       setCurrent(divElement);
     },
-    [setIsDrag],
+    [setIsDrag, setCurrent],
   );
 
   // Update DB on mouse up
