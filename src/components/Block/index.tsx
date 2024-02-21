@@ -3,7 +3,7 @@ import { isMobile } from "react-device-detect";
 import tinyColor from "tinycolor2";
 import { sounds } from "../../constants/sounds";
 import { dragContext } from "../../store/global/Drag";
-import { useSound } from "../../store/global/Sound";
+import { useSound } from "../../hooks/Sound";
 import Styles from "../../scss/components/Block.module.scss";
 import { useFirstTouch } from "../../hooks/useFirstTouch";
 

@@ -32,7 +32,8 @@ export const useSound = () => {
       audioContext?.suspend().catch((error) => console.error(error));
     }
 
-    timer.current = window.setTimeout(() => checkAndCStopAudio(), 100);
+    setIsPlaying(false);
+    timer.current = window.setTimeout(() => checkAndCStopAudio(), 200);
   }, [audioContext, isLoaded, isLoop, isPlaying, source]);
 
   useEffect(() => {
@@ -83,7 +84,9 @@ export const useSound = () => {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
         initAudio(fileName).catch((error) => console.error(error));
       } else {
-        audioContext?.resume().catch((error) => console.error(error));
+        // eslint-disable-next-line no-unused-expressions
+        audioContext?.state === "suspended" &&
+          audioContext?.resume().catch((error) => console.error(error));
       }
 
       setIsPlaying(true);
@@ -101,7 +104,9 @@ export const useSound = () => {
       audioContext?.close();
       setAudioContext(null);
     } else {
-      audioContext?.suspend().catch((error) => console.error(error));
+      // eslint-disable-next-line no-unused-expressions
+      audioContext?.state === "running" &&
+        audioContext?.suspend().catch((error) => console.error(error));
     }
 
     setIsPlaying(false);
