@@ -10,8 +10,8 @@ export const useSound = () => {
 
   const timer = useRef<number | null>(null);
 
-  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
-  // const filePath = "/sounds";
+  // const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+  const filePath = "/sounds";
 
   // NOTE: Suspend audio correctly when isPlaying is false
   const checkAndCStopAudio = useCallback(() => {
@@ -23,13 +23,16 @@ export const useSound = () => {
     if (isLoop) {
       source?.stop();
       source?.disconnect();
-      setSource(null);
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       audioContext?.close();
+
+      setSource(null);
       setAudioContext(null);
     } else {
-      audioContext?.suspend().catch((error) => console.error(error));
+      // eslint-disable-next-line no-unused-expressions
+      audioContext?.state === "running" &&
+        audioContext?.suspend().catch((error) => console.error(error));
     }
 
     setIsPlaying(false);
@@ -62,15 +65,16 @@ export const useSound = () => {
       .then((audioBuffer) => {
         src.buffer = audioBuffer;
         src.loop = true;
+
         src.connect(ctx.destination);
-        src.start(0);
+        src.start(ctx.currentTime);
 
         setAudioContext(ctx);
         setSource(src);
         setIsLoaded(true);
       })
       .catch((error) => {
-        console.error(`Failed to load file: ${filePath}${fileName}`, error);
+        console.error(`Failed to load file: ${filePath}/${fileName}`, error);
       });
   }, []);
 
@@ -98,10 +102,11 @@ export const useSound = () => {
     if (isLoop) {
       source?.stop();
       source?.disconnect();
-      setSource(null);
 
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
       audioContext?.close();
+
+      setSource(null);
       setAudioContext(null);
     } else {
       // eslint-disable-next-line no-unused-expressions
