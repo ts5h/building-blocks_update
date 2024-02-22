@@ -1,116 +1,56 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
+
+const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
+// const filePath = "/sounds";
 
 export const useSound = () => {
   const [isLoop, setIsLoop] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
-  const [source, setSource] = useState<AudioBufferSourceNode | null>(null);
+  const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [currentTime, setCurrentTime] = useState(0);
 
-  const timer = useRef<number | null>(null);
+  const initAudio = useCallback((fileName: string) => {
+    const localAudio = new Audio(`${filePath}/${fileName}`);
+    localAudio.loop = true;
+    localAudio.autoplay = true;
 
-  const filePath = "https://0bjekt.co/2023/building-blocks_2/sounds";
-  // const filePath = "/sounds";
-
-  // NOTE: Suspend audio correctly when isPlaying is false
-  const checkAndCStopAudio = useCallback(() => {
-    if (!isLoaded || isPlaying || audioContext?.state !== "running") {
-      if (timer.current) window.clearTimeout(timer.current);
-      return;
-    }
-
-    if (isLoop) {
-      source?.stop();
-      source?.disconnect();
-      setSource(null);
-
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      audioContext?.close();
-      setAudioContext(null);
-    } else {
-      audioContext?.suspend().catch((error) => console.error(error));
-    }
-
-    setIsPlaying(false);
-    timer.current = window.setTimeout(() => checkAndCStopAudio(), 200);
-  }, [audioContext, isLoaded, isLoop, isPlaying, source]);
-
-  useEffect(() => {
-    checkAndCStopAudio();
-  }, [checkAndCStopAudio]);
-
-  const initAudio = useCallback(async (fileName: string) => {
-    // Check the file condition
-    if (fileName === "") {
-      console.error("File name is empty");
-      return;
-    }
-
-    const extension = fileName.split(".").pop() || "";
-    if (extension !== "mp3") {
-      console.error(`File extension ${extension} is not supported`);
-      return;
-    }
-
-    const ctx = new AudioContext();
-    const src = ctx.createBufferSource();
-
-    await fetch(`${filePath}/${fileName}`)
-      .then((response) => response.arrayBuffer())
-      .then((arrayBuffer) => ctx.decodeAudioData(arrayBuffer))
-      .then((audioBuffer) => {
-        src.buffer = audioBuffer;
-        src.loop = true;
-        src.connect(ctx.destination);
-        src.start(0);
-
-        setAudioContext(ctx);
-        setSource(src);
-        setIsLoaded(true);
-      })
-      .catch((error) => {
-        console.error(`Failed to load file: ${filePath}${fileName}`, error);
-      });
+    setAudio(localAudio);
+    setIsLoaded(true);
   }, []);
 
   const startPlaying = useCallback(
     (soundFile: Sound) => {
-      // console.log(soundFile);
       const { fileName, loop } = soundFile;
       setIsLoop(loop);
 
-      if (!isLoaded || loop) {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        initAudio(fileName).catch((error) => console.error(error));
+      if (!isLoaded) initAudio(fileName);
+      if (!audio || isPlaying) return;
+
+      if (loop) {
+        audio.currentTime = 0;
       } else {
-        // eslint-disable-next-line no-unused-expressions
-        audioContext?.state === "suspended" &&
-          audioContext?.resume().catch((error) => console.error(error));
+        audio.currentTime = currentTime;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-floating-promises
+      audio.play();
       setIsPlaying(true);
     },
-    [audioContext, initAudio, isLoaded],
+    [audio, currentTime, initAudio, isLoaded, isPlaying],
   );
 
   const stopPlaying = useCallback(() => {
-    if (isLoop) {
-      source?.stop();
-      source?.disconnect();
-      setSource(null);
+    if (!audio || !isLoaded) return;
 
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      audioContext?.close();
-      setAudioContext(null);
-    } else {
-      // eslint-disable-next-line no-unused-expressions
-      audioContext?.state === "running" &&
-        audioContext?.suspend().catch((error) => console.error(error));
+    if (!isLoop) {
+      setCurrentTime(audio.currentTime);
     }
 
+    audio.pause();
     setIsPlaying(false);
-  }, [audioContext, isLoop, source]);
+  }, [audio, isLoaded, isLoop]);
 
   return {
     startPlaying,
